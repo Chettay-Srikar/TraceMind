@@ -1,141 +1,570 @@
 [
-  {"timestamp": "2026-09-04T08:00:12", "service": "api-gateway", "level": "INFO", "message": "API gateway started successfully", "response_time_ms": 85, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:00:34", "service": "auth-service", "level": "INFO", "message": "Auth service initialized", "response_time_ms": 62, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:00:58", "service": "database", "level": "INFO", "message": "Database connection pool initialized with 20 connections", "response_time_ms": 145, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:01:22", "service": "payment-service", "level": "INFO", "message": "Payment service ready", "response_time_ms": 78, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:01:45", "service": "user-service", "level": "INFO", "message": "User service health check passed", "response_time_ms": 55, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:02:10", "service": "notification-service", "level": "INFO", "message": "Notification service connected to message queue", "response_time_ms": 130, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:05:33", "service": "api-gateway", "level": "INFO", "message": "GET /api/health responded successfully", "response_time_ms": 52, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:07:14", "service": "auth-service", "level": "INFO", "message": "Token validation completed for user session", "response_time_ms": 98, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:09:41", "service": "database", "level": "INFO", "message": "Query executed on users table in normal time", "response_time_ms": 167, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:12:08", "service": "user-service", "level": "INFO", "message": "User profile retrieved successfully", "response_time_ms": 112, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:14:55", "service": "payment-service", "level": "INFO", "message": "Payment processed for order 10234", "response_time_ms": 245, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:17:30", "service": "notification-service", "level": "INFO", "message": "Email notification queued for delivery", "response_time_ms": 89, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:20:02", "service": "api-gateway", "level": "INFO", "message": "POST /api/users processed successfully", "response_time_ms": 175, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:22:47", "service": "auth-service", "level": "INFO", "message": "New user session created", "response_time_ms": 134, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:25:19", "service": "database", "level": "INFO", "message": "Connection pool utilization at 35 percent", "response_time_ms": 58, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:28:36", "service": "user-service", "level": "INFO", "message": "User preferences updated successfully", "response_time_ms": 201, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:31:12", "service": "payment-service", "level": "INFO", "message": "Refund processed for order 10189", "response_time_ms": 278, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:33:58", "service": "api-gateway", "level": "INFO", "message": "GET /api/products responded with 200 items", "response_time_ms": 195, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:36:44", "service": "notification-service", "level": "INFO", "message": "SMS notification sent successfully", "response_time_ms": 156, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:39:21", "service": "database", "level": "INFO", "message": "Scheduled backup completed successfully", "response_time_ms": 289, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:42:05", "service": "auth-service", "level": "INFO", "message": "Password reset token generated", "response_time_ms": 73, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:44:50", "service": "user-service", "level": "INFO", "message": "User search query returned 15 results", "response_time_ms": 187, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:47:33", "service": "api-gateway", "level": "INFO", "message": "Rate limiter operating within normal thresholds", "response_time_ms": 64, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:50:17", "service": "payment-service", "level": "INFO", "message": "Daily transaction summary generated", "response_time_ms": 234, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:53:02", "service": "database", "level": "INFO", "message": "Database connection healthy", "response_time_ms": 120, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:55:48", "service": "notification-service", "level": "INFO", "message": "Push notification delivered to 342 devices", "response_time_ms": 267, "scenario": "normal"},
-  {"timestamp": "2026-09-04T08:58:35", "service": "auth-service", "level": "INFO", "message": "OAuth token refreshed for external integration", "response_time_ms": 142, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:01:20", "service": "user-service", "level": "INFO", "message": "User registration completed for new account", "response_time_ms": 198, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:04:07", "service": "api-gateway", "level": "INFO", "message": "PUT /api/orders/10301 processed successfully", "response_time_ms": 153, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:06:53", "service": "database", "level": "INFO", "message": "Index rebuild completed on orders table", "response_time_ms": 295, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:09:40", "service": "payment-service", "level": "INFO", "message": "Stripe webhook received and processed", "response_time_ms": 176, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:12:28", "service": "notification-service", "level": "INFO", "message": "Batch email job completed for 89 recipients", "response_time_ms": 243, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:15:14", "service": "auth-service", "level": "INFO", "message": "Session cleanup removed 23 expired sessions", "response_time_ms": 108, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:18:01", "service": "api-gateway", "level": "INFO", "message": "Health check endpoint responded normally", "response_time_ms": 48, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:20:47", "service": "user-service", "level": "INFO", "message": "User avatar uploaded and resized", "response_time_ms": 210, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:23:33", "service": "database", "level": "INFO", "message": "Read replica sync completed within tolerance", "response_time_ms": 178, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:26:19", "service": "payment-service", "level": "INFO", "message": "Currency conversion cache refreshed", "response_time_ms": 92, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:29:05", "service": "notification-service", "level": "INFO", "message": "Webhook callback delivered successfully", "response_time_ms": 167, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:31:52", "service": "api-gateway", "level": "INFO", "message": "DELETE /api/sessions processed with 204 response", "response_time_ms": 71, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:34:38", "service": "auth-service", "level": "INFO", "message": "Multi-factor authentication verified", "response_time_ms": 189, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:37:24", "service": "database", "level": "INFO", "message": "Connection pool utilization at 42 percent", "response_time_ms": 65, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:40:11", "service": "user-service", "level": "INFO", "message": "Bulk user export completed for admin request", "response_time_ms": 287, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:42:57", "service": "payment-service", "level": "INFO", "message": "Payment gateway connection verified", "response_time_ms": 143, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:45:44", "service": "api-gateway", "level": "INFO", "message": "Request logging pipeline operating normally", "response_time_ms": 56, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:48:30", "service": "notification-service", "level": "INFO", "message": "In-app notification delivered to user 8834", "response_time_ms": 124, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:51:17", "service": "database", "level": "INFO", "message": "Slow query log rotated successfully", "response_time_ms": 198, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:54:03", "service": "auth-service", "level": "INFO", "message": "API key validated for service integration", "response_time_ms": 82, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:56:50", "service": "user-service", "level": "INFO", "message": "Account deactivation processed for user 4421", "response_time_ms": 165, "scenario": "normal"},
-  {"timestamp": "2026-09-04T09:59:36", "service": "api-gateway", "level": "INFO", "message": "PATCH /api/users/4421 processed successfully", "response_time_ms": 139, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:02:22", "service": "payment-service", "level": "INFO", "message": "Subscription renewal processed for 12 accounts", "response_time_ms": 256, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:05:09", "service": "database", "level": "INFO", "message": "Table statistics updated for query optimizer", "response_time_ms": 213, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:07:55", "service": "notification-service", "level": "INFO", "message": "Message queue depth at 14 messages", "response_time_ms": 77, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:10:42", "service": "auth-service", "level": "INFO", "message": "Login attempt succeeded for user 7792", "response_time_ms": 101, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:13:28", "service": "user-service", "level": "INFO", "message": "User activity log flushed to storage", "response_time_ms": 184, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:16:14", "service": "api-gateway", "level": "INFO", "message": "SSL certificate validation passed", "response_time_ms": 53, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:19:01", "service": "database", "level": "INFO", "message": "Automated vacuum process completed on 3 tables", "response_time_ms": 276, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:21:47", "service": "payment-service", "level": "INFO", "message": "Fraud detection scan completed with no alerts", "response_time_ms": 192, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:24:34", "service": "notification-service", "level": "INFO", "message": "Email template cache refreshed", "response_time_ms": 68, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:27:20", "service": "auth-service", "level": "INFO", "message": "JWT signing key rotation completed", "response_time_ms": 147, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:30:06", "service": "user-service", "level": "INFO", "message": "User data sync completed with CRM system", "response_time_ms": 231, "scenario": "normal"},
-
-  {"timestamp": "2026-09-04T10:33:15", "service": "database", "level": "WARNING", "message": "Database connection acquisition time increasing above normal threshold", "response_time_ms": 345, "scenario": "database_failure"},
-  {"timestamp": "2026-09-04T10:34:42", "service": "database", "level": "WARNING", "message": "Connection pool utilization above 80 percent", "response_time_ms": 489, "scenario": "database_failure"},
-  {"timestamp": "2026-09-04T10:35:58", "service": "database", "level": "WARNING", "message": "Active connections rising rapidly across all pools", "response_time_ms": 567, "scenario": "database_failure"},
-  {"timestamp": "2026-09-04T10:37:10", "service": "database", "level": "ERROR", "message": "Database connection timeout after 5000ms wait", "response_time_ms": 1245, "scenario": "database_failure"},
-  {"timestamp": "2026-09-04T10:38:25", "service": "database", "level": "ERROR", "message": "Failed to acquire database connection from pool", "response_time_ms": 1580, "scenario": "database_failure"},
-  {"timestamp": "2026-09-04T10:39:33", "service": "payment-service", "level": "ERROR", "message": "Payment processing failed due to database unavailability", "response_time_ms": 1820, "scenario": "database_failure"},
-  {"timestamp": "2026-09-04T10:40:47", "service": "database", "level": "ERROR", "message": "Connection pool exhausted with 0 available connections", "response_time_ms": 1950, "scenario": "database_failure"},
-  {"timestamp": "2026-09-04T10:41:55", "service": "user-service", "level": "ERROR", "message": "User lookup failed due to database connection error", "response_time_ms": 1670, "scenario": "database_failure"},
-  {"timestamp": "2026-09-04T10:43:08", "service": "database", "level": "CRITICAL", "message": "Maximum database connections reached across all nodes", "response_time_ms": 4200, "scenario": "database_failure"},
-  {"timestamp": "2026-09-04T10:44:20", "service": "database", "level": "CRITICAL", "message": "Database cluster unresponsive to health check probes", "response_time_ms": 4850, "scenario": "database_failure"},
-
-  {"timestamp": "2026-09-04T10:48:30", "service": "database", "level": "INFO", "message": "Database connections recovering after pool reset", "response_time_ms": 280, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:51:14", "service": "api-gateway", "level": "INFO", "message": "Request throughput returning to normal levels", "response_time_ms": 135, "scenario": "normal"},
-  {"timestamp": "2026-09-04T10:54:02", "service": "payment-service", "level": "INFO", "message": "Payment processing resumed successfully", "response_time_ms": 198, "scenario": "normal"},
-
-  {"timestamp": "2026-09-04T10:58:15", "service": "user-service", "level": "WARNING", "message": "Memory usage above 80 percent on user-service instance", "response_time_ms": 312, "scenario": "memory_problem"},
-  {"timestamp": "2026-09-04T10:59:30", "service": "user-service", "level": "WARNING", "message": "Memory pressure increasing on heap allocation", "response_time_ms": 478, "scenario": "memory_problem"},
-  {"timestamp": "2026-09-04T11:00:45", "service": "user-service", "level": "WARNING", "message": "Garbage collection frequency increased to every 8 seconds", "response_time_ms": 623, "scenario": "memory_problem"},
-  {"timestamp": "2026-09-04T11:02:02", "service": "user-service", "level": "ERROR", "message": "Heap memory at 92 percent with aggressive garbage collection", "response_time_ms": 980, "scenario": "memory_problem"},
-  {"timestamp": "2026-09-04T11:03:18", "service": "user-service", "level": "ERROR", "message": "Memory allocation failures detected on request handling", "response_time_ms": 1340, "scenario": "memory_problem"},
-  {"timestamp": "2026-09-04T11:04:35", "service": "user-service", "level": "ERROR", "message": "Request dropped due to insufficient memory for buffer allocation", "response_time_ms": 1560, "scenario": "memory_problem"},
-  {"timestamp": "2026-09-04T11:05:50", "service": "api-gateway", "level": "ERROR", "message": "Upstream user-service returning 503 due to resource exhaustion", "response_time_ms": 1180, "scenario": "memory_problem"},
-  {"timestamp": "2026-09-04T11:07:05", "service": "user-service", "level": "CRITICAL", "message": "Out of memory condition on user-service primary instance", "response_time_ms": 3800, "scenario": "memory_problem"},
-  {"timestamp": "2026-09-04T11:08:20", "service": "user-service", "level": "CRITICAL", "message": "User-service instance terminated by OS due to memory limit exceeded", "response_time_ms": 4500, "scenario": "memory_problem"},
-  {"timestamp": "2026-09-04T11:09:35", "service": "notification-service", "level": "CRITICAL", "message": "Dependent notifications failing due to user-service unavailability", "response_time_ms": 3200, "scenario": "memory_problem"},
-
-  {"timestamp": "2026-09-04T11:13:50", "service": "user-service", "level": "INFO", "message": "User-service instance restarted with increased memory limits", "response_time_ms": 195, "scenario": "normal"},
-  {"timestamp": "2026-09-04T11:16:35", "service": "api-gateway", "level": "INFO", "message": "All upstream services reporting healthy status", "response_time_ms": 72, "scenario": "normal"},
-  {"timestamp": "2026-09-04T11:19:20", "service": "notification-service", "level": "INFO", "message": "Notification backlog cleared after service recovery", "response_time_ms": 156, "scenario": "normal"},
-
-  {"timestamp": "2026-09-04T11:23:10", "service": "api-gateway", "level": "WARNING", "message": "Upstream response time for payment-service becoming slow at 450ms average", "response_time_ms": 380, "scenario": "api_timeout"},
-  {"timestamp": "2026-09-04T11:24:28", "service": "payment-service", "level": "WARNING", "message": "External payment gateway latency elevated to 780ms", "response_time_ms": 520, "scenario": "api_timeout"},
-  {"timestamp": "2026-09-04T11:25:44", "service": "api-gateway", "level": "WARNING", "message": "High API latency detected on payment endpoints exceeding SLA threshold", "response_time_ms": 710, "scenario": "api_timeout"},
-  {"timestamp": "2026-09-04T11:27:00", "service": "payment-service", "level": "ERROR", "message": "API request timeout after 3000ms waiting for payment gateway response", "response_time_ms": 1450, "scenario": "api_timeout"},
-  {"timestamp": "2026-09-04T11:28:15", "service": "api-gateway", "level": "ERROR", "message": "Multiple payment API requests exceeding 5 second timeout limit", "response_time_ms": 1780, "scenario": "api_timeout"},
-  {"timestamp": "2026-09-04T11:29:30", "service": "payment-service", "level": "ERROR", "message": "Payment gateway returning HTTP 504 on transaction requests", "response_time_ms": 1920, "scenario": "api_timeout"},
-  {"timestamp": "2026-09-04T11:30:45", "service": "api-gateway", "level": "ERROR", "message": "Upstream payment-service marked unavailable after 10 consecutive timeouts", "response_time_ms": 1650, "scenario": "api_timeout"},
-  {"timestamp": "2026-09-04T11:32:00", "service": "payment-service", "level": "CRITICAL", "message": "Payment gateway completely unresponsive to all request types", "response_time_ms": 4100, "scenario": "api_timeout"},
-  {"timestamp": "2026-09-04T11:33:15", "service": "api-gateway", "level": "CRITICAL", "message": "Gateway timeout on all payment-related endpoints affecting order flow", "response_time_ms": 4600, "scenario": "api_timeout"},
-  {"timestamp": "2026-09-04T11:34:30", "service": "notification-service", "level": "CRITICAL", "message": "Payment confirmation notifications stalled due to gateway failure", "response_time_ms": 2800, "scenario": "api_timeout"},
-
-  {"timestamp": "2026-09-04T11:38:45", "service": "payment-service", "level": "INFO", "message": "Payment gateway connection restored after failover", "response_time_ms": 220, "scenario": "normal"},
-  {"timestamp": "2026-09-04T11:41:30", "service": "api-gateway", "level": "INFO", "message": "Payment endpoints responding within normal latency range", "response_time_ms": 98, "scenario": "normal"},
-  {"timestamp": "2026-09-04T11:44:15", "service": "notification-service", "level": "INFO", "message": "Stalled payment notifications now being delivered", "response_time_ms": 145, "scenario": "normal"},
-
-  {"timestamp": "2026-09-04T11:48:20", "service": "api-gateway", "level": "WARNING", "message": "Intermittent packet loss detected on internal service mesh", "response_time_ms": 340, "scenario": "network_problem"},
-  {"timestamp": "2026-09-04T11:49:38", "service": "auth-service", "level": "WARNING", "message": "Connection reset received from user-service during token exchange", "response_time_ms": 455, "scenario": "network_problem"},
-  {"timestamp": "2026-09-04T11:50:55", "service": "api-gateway", "level": "WARNING", "message": "Service communication degraded with 12 percent packet loss rate", "response_time_ms": 680, "scenario": "network_problem"},
-  {"timestamp": "2026-09-04T11:52:10", "service": "user-service", "level": "ERROR", "message": "Connection to auth-service refused on port 8443", "response_time_ms": 1100, "scenario": "network_problem"},
-  {"timestamp": "2026-09-04T11:53:28", "service": "api-gateway", "level": "ERROR", "message": "Multiple services unreachable through internal load balancer", "response_time_ms": 1450, "scenario": "network_problem"},
-  {"timestamp": "2026-09-04T11:54:45", "service": "notification-service", "level": "ERROR", "message": "Failed to connect to message queue broker after 3 retries", "response_time_ms": 1280, "scenario": "network_problem"},
-  {"timestamp": "2026-09-04T11:56:00", "service": "payment-service", "level": "ERROR", "message": "Network timeout connecting to database cluster on primary endpoint", "response_time_ms": 1750, "scenario": "network_problem"},
-  {"timestamp": "2026-09-04T11:57:15", "service": "api-gateway", "level": "CRITICAL", "message": "Network partition detected between availability zones", "response_time_ms": 3500, "scenario": "network_problem"},
-  {"timestamp": "2026-09-04T11:58:30", "service": "auth-service", "level": "CRITICAL", "message": "Authentication service isolated due to network failure", "response_time_ms": 4300, "scenario": "network_problem"},
-  {"timestamp": "2026-09-04T11:59:45", "service": "database", "level": "CRITICAL", "message": "Database replication halted due to network connectivity loss between nodes", "response_time_ms": 4700, "scenario": "network_problem"},
-
-  {"timestamp": "2026-09-04T12:04:00", "service": "api-gateway", "level": "INFO", "message": "Network connectivity restored between all availability zones", "response_time_ms": 165, "scenario": "normal"},
-  {"timestamp": "2026-09-04T12:06:45", "service": "database", "level": "INFO", "message": "Database replication resumed and sync in progress", "response_time_ms": 240, "scenario": "normal"},
-  {"timestamp": "2026-09-04T12:09:30", "service": "auth-service", "level": "INFO", "message": "Auth service reconnected to all dependent services", "response_time_ms": 112, "scenario": "normal"},
-
-  {"timestamp": "2026-09-04T12:13:40", "service": "api-gateway", "level": "WARNING", "message": "CPU utilization above 80 percent on api-gateway primary node", "response_time_ms": 365, "scenario": "cpu_overload"},
-  {"timestamp": "2026-09-04T12:14:55", "service": "api-gateway", "level": "WARNING", "message": "CPU utilization above 90 percent with request queue growing", "response_time_ms": 540, "scenario": "cpu_overload"},
-  {"timestamp": "2026-09-04T12:16:10", "service": "api-gateway", "level": "WARNING", "message": "Request processing delayed due to CPU contention on worker threads", "response_time_ms": 780, "scenario": "cpu_overload"},
-  {"timestamp": "2026-09-04T12:17:25", "service": "api-gateway", "level": "ERROR", "message": "CPU saturation at 97 percent causing request queue overflow", "response_time_ms": 1350, "scenario": "cpu_overload"},
-  {"timestamp": "2026-09-04T12:18:40", "service": "api-gateway", "level": "ERROR", "message": "Request processing latency exceeding 2000ms due to CPU exhaustion", "response_time_ms": 1890, "scenario": "cpu_overload"},
-  {"timestamp": "2026-09-04T12:19:55", "service": "auth-service", "level": "ERROR", "message": "Token validation delayed due to upstream api-gateway congestion", "response_time_ms": 1200, "scenario": "cpu_overload"},
-  {"timestamp": "2026-09-04T12:21:10", "service": "api-gateway", "level": "ERROR", "message": "Worker thread pool fully saturated with 0 idle threads", "response_time_ms": 1980, "scenario": "cpu_overload"},
-  {"timestamp": "2026-09-04T12:22:25", "service": "api-gateway", "level": "CRITICAL", "message": "Severe request latency exceeding 4 seconds across all endpoints", "response_time_ms": 4150, "scenario": "cpu_overload"},
-  {"timestamp": "2026-09-04T12:23:40", "service": "api-gateway", "level": "CRITICAL", "message": "CPU overload causing cascading failures across dependent services", "response_time_ms": 4800, "scenario": "cpu_overload"},
-  {"timestamp": "2026-09-04T12:24:55", "service": "user-service", "level": "CRITICAL", "message": "User requests failing due to api-gateway resource exhaustion", "response_time_ms": 3600, "scenario": "cpu_overload"},
-
-  {"timestamp": "2026-09-04T12:29:10", "service": "api-gateway", "level": "INFO", "message": "CPU utilization normalized after autoscaling added 2 instances", "response_time_ms": 142, "scenario": "normal"},
-  {"timestamp": "2026-09-04T12:31:55", "service": "user-service", "level": "INFO", "message": "All user-facing endpoints responding normally", "response_time_ms": 88, "scenario": "normal"},
-  {"timestamp": "2026-09-04T12:34:40", "service": "auth-service", "level": "INFO", "message": "Authentication latency returned to baseline", "response_time_ms": 95, "scenario": "normal"},
-  {"timestamp": "2026-09-04T12:37:25", "service": "database", "level": "INFO", "message": "All database health checks passing normally", "response_time_ms": 110, "scenario": "normal"},
-  {"timestamp": "2026-09-04T12:40:10", "service": "payment-service", "level": "INFO", "message": "End of day reconciliation completed successfully", "response_time_ms": 267, "scenario": "normal"},
-  {"timestamp": "2026-09-04T12:42:55", "service": "notification-service", "level": "INFO", "message": "All notification channels operational", "response_time_ms": 79, "scenario": "normal"},
-  {"timestamp": "2026-09-04T12:45:40", "service": "api-gateway", "level": "INFO", "message": "System operating within all normal parameters", "response_time_ms": 58, "scenario": "normal"}
+  {
+    "timestamp": "2026-09-04T08:00:21",
+    "service": "api-gateway",
+    "level": "INFO",
+    "message": "api-gateway processed request normally",
+    "response_time_ms": 26,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:00:45",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 82,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:00:53",
+    "service": "payment-service",
+    "level": "INFO",
+    "message": "payment-service processed request normally",
+    "response_time_ms": 46,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:01:15",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 42,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:01:34",
+    "service": "auth-service",
+    "level": "INFO",
+    "message": "auth-service processed request normally",
+    "response_time_ms": 28,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:01:35",
+    "service": "api-gateway",
+    "level": "INFO",
+    "message": "api-gateway processed request normally",
+    "response_time_ms": 75,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:01:43",
+    "service": "user-service",
+    "level": "INFO",
+    "message": "user-service processed request normally",
+    "response_time_ms": 26,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:02:01",
+    "service": "payment-service",
+    "level": "INFO",
+    "message": "payment-service processed request normally",
+    "response_time_ms": 127,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:02:09",
+    "service": "auth-service",
+    "level": "INFO",
+    "message": "auth-service processed request normally",
+    "response_time_ms": 91,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:02:35",
+    "service": "api-gateway",
+    "level": "INFO",
+    "message": "api-gateway processed request normally",
+    "response_time_ms": 60,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:02:58",
+    "service": "auth-service",
+    "level": "INFO",
+    "message": "auth-service processed request normally",
+    "response_time_ms": 107,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:03:07",
+    "service": "payment-service",
+    "level": "INFO",
+    "message": "payment-service processed request normally",
+    "response_time_ms": 75,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:03:20",
+    "service": "database",
+    "level": "INFO",
+    "message": "Database query executed normally",
+    "response_time_ms": 137,
+    "scenario": "database failure"
+  },
+  {
+    "timestamp": "2026-09-04T08:03:32",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 46,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:03:33",
+    "service": "database",
+    "level": "WARNING",
+    "message": "Database query latency increasing",
+    "response_time_ms": 684,
+    "scenario": "database failure"
+  },
+  {
+    "timestamp": "2026-09-04T08:03:35",
+    "service": "auth-service",
+    "level": "INFO",
+    "message": "auth-service processed request normally",
+    "response_time_ms": 44,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:03:42",
+    "service": "user-service",
+    "level": "ERROR",
+    "message": "User service failed to fetch data from database",
+    "response_time_ms": 2574,
+    "scenario": "database failure"
+  },
+  {
+    "timestamp": "2026-09-04T08:03:43",
+    "service": "payment-service",
+    "level": "ERROR",
+    "message": "Payment service database transaction failed",
+    "response_time_ms": 2812,
+    "scenario": "database failure"
+  },
+  {
+    "timestamp": "2026-09-04T08:03:47",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 87,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:03:52",
+    "service": "api-gateway",
+    "level": "CRITICAL",
+    "message": "API Gateway returned 500 Internal Server Error due to upstream failures",
+    "response_time_ms": 3228,
+    "scenario": "database failure"
+  },
+  {
+    "timestamp": "2026-09-04T08:04:13",
+    "service": "api-gateway",
+    "level": "INFO",
+    "message": "api-gateway processed request normally",
+    "response_time_ms": 137,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:04:31",
+    "service": "api-gateway",
+    "level": "INFO",
+    "message": "api-gateway processed request normally",
+    "response_time_ms": 116,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:04:34",
+    "service": "user-service",
+    "level": "INFO",
+    "message": "user-service processed request normally",
+    "response_time_ms": 95,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:05:01",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 112,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:05:20",
+    "service": "payment-service",
+    "level": "INFO",
+    "message": "payment-service processed request normally",
+    "response_time_ms": 37,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:05:22",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 78,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:05:47",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 40,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:06:15",
+    "service": "payment-service",
+    "level": "INFO",
+    "message": "payment-service processed request normally",
+    "response_time_ms": 45,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:06:28",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 136,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:06:49",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 61,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:07:01",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 73,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:07:23",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 38,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:07:43",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 63,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:08:01",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 82,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:08:07",
+    "service": "auth-service",
+    "level": "INFO",
+    "message": "auth-service processed request normally",
+    "response_time_ms": 117,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:08:16",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 76,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:08:20",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "Garbage collection completed",
+    "response_time_ms": 29,
+    "scenario": "memory problem"
+  },
+  {
+    "timestamp": "2026-09-04T08:08:38",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 34,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:08:46",
+    "service": "api-gateway",
+    "level": "INFO",
+    "message": "api-gateway processed request normally",
+    "response_time_ms": 100,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:08:59",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 36,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:09:03",
+    "service": "notification-service",
+    "level": "WARNING",
+    "message": "High memory usage detected (85%)",
+    "response_time_ms": 140,
+    "scenario": "memory problem"
+  },
+  {
+    "timestamp": "2026-09-04T08:09:06",
+    "service": "user-service",
+    "level": "INFO",
+    "message": "user-service processed request normally",
+    "response_time_ms": 100,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:09:13",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 147,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:09:26",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 137,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:09:31",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 55,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:09:39",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 87,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:09:47",
+    "service": "notification-service",
+    "level": "ERROR",
+    "message": "Frequent GC pauses impacting performance",
+    "response_time_ms": 501,
+    "scenario": "memory problem"
+  },
+  {
+    "timestamp": "2026-09-04T08:10:03",
+    "service": "user-service",
+    "level": "INFO",
+    "message": "user-service processed request normally",
+    "response_time_ms": 129,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:10:05",
+    "service": "notification-service",
+    "level": "CRITICAL",
+    "message": "OutOfMemoryError: Java heap space",
+    "response_time_ms": 3990,
+    "scenario": "memory problem"
+  },
+  {
+    "timestamp": "2026-09-04T08:10:32",
+    "service": "user-service",
+    "level": "INFO",
+    "message": "user-service processed request normally",
+    "response_time_ms": 122,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:10:44",
+    "service": "payment-service",
+    "level": "INFO",
+    "message": "payment-service processed request normally",
+    "response_time_ms": 55,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:11:01",
+    "service": "auth-service",
+    "level": "INFO",
+    "message": "auth-service processed request normally",
+    "response_time_ms": 43,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:11:26",
+    "service": "api-gateway",
+    "level": "INFO",
+    "message": "api-gateway processed request normally",
+    "response_time_ms": 48,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:11:31",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 60,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:11:57",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 128,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:12:17",
+    "service": "api-gateway",
+    "level": "INFO",
+    "message": "api-gateway processed request normally",
+    "response_time_ms": 118,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:12:30",
+    "service": "user-service",
+    "level": "INFO",
+    "message": "user-service processed request normally",
+    "response_time_ms": 139,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:12:47",
+    "service": "database",
+    "level": "INFO",
+    "message": "database processed request normally",
+    "response_time_ms": 22,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:13:09",
+    "service": "notification-service",
+    "level": "INFO",
+    "message": "notification-service processed request normally",
+    "response_time_ms": 49,
+    "scenario": "normal"
+  },
+  {
+    "timestamp": "2026-09-04T08:13:20",
+    "service": "payment-service",
+    "level": "INFO",
+    "message": "Payment request received",
+    "response_time_ms": 164,
+    "scenario": "api timeout"
+  },
+  {
+    "timestamp": "2026-09-04T08:13:26",
+    "service": "payment-service",
+    "level": "WARNING",
+    "message": "Payment processor taking longer than expected",
+    "response_time_ms": 2539,
+    "scenario": "api timeout"
+  },
+  {
+    "timestamp": "2026-09-04T08:13:31",
+    "service": "payment-service",
+    "level": "ERROR",
+    "message": "Payment processor timed out",
+    "response_time_ms": 5891,
+    "scenario": "api timeout"
+  },
+  {
+    "timestamp": "2026-09-04T08:13:34",
+    "service": "api-gateway",
+    "level": "CRITICAL",
+    "message": "504 Gateway Timeout while proxying to payment-service",
+    "response_time_ms": 6361,
+    "scenario": "api timeout"
+  },
+  {
+    "timestamp": "2026-09-04T08:20:00",
+    "service": "auth-service",
+    "level": "INFO",
+    "message": "Authenticating user",
+    "response_time_ms": 70,
+    "scenario": "network problem"
+  },
+  {
+    "timestamp": "2026-09-04T08:20:03",
+    "service": "auth-service",
+    "level": "WARNING",
+    "message": "Network latency spike detected when connecting to user database",
+    "response_time_ms": 478,
+    "scenario": "network problem"
+  },
+  {
+    "timestamp": "2026-09-04T08:20:10",
+    "service": "auth-service",
+    "level": "ERROR",
+    "message": "Connection refused to user database",
+    "response_time_ms": 1780,
+    "scenario": "network problem"
+  },
+  {
+    "timestamp": "2026-09-04T08:20:11",
+    "service": "api-gateway",
+    "level": "CRITICAL",
+    "message": "401 Unauthorized due to downstream auth failure",
+    "response_time_ms": 1752,
+    "scenario": "network problem"
+  },
+  {
+    "timestamp": "2026-09-04T08:26:40",
+    "service": "user-service",
+    "level": "INFO",
+    "message": "Processing complex user data export",
+    "response_time_ms": 285,
+    "scenario": "cpu overload"
+  },
+  {
+    "timestamp": "2026-09-04T08:26:55",
+    "service": "user-service",
+    "level": "WARNING",
+    "message": "CPU utilization at 90%",
+    "response_time_ms": 1106,
+    "scenario": "cpu overload"
+  },
+  {
+    "timestamp": "2026-09-04T08:27:20",
+    "service": "user-service",
+    "level": "ERROR",
+    "message": "Request queue full, dropping incoming requests",
+    "response_time_ms": 3000,
+    "scenario": "cpu overload"
+  },
+  {
+    "timestamp": "2026-09-04T08:27:25",
+    "service": "api-gateway",
+    "level": "CRITICAL",
+    "message": "503 Service Unavailable for user-service endpoints",
+    "response_time_ms": 3114,
+    "scenario": "cpu overload"
+  }
 ]

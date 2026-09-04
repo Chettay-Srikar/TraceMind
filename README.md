@@ -8,7 +8,7 @@ TraceMind investigates simulated production incidents using logs, metrics, and s
 
 ## Current Phase
 
-**Project Initialization** — structure only, no features implemented yet.
+**Step 1** — Implemented Simulated System and Log/Metric Generator.
 
 ## Planned Technology Stack
 
@@ -24,18 +24,30 @@ TraceMind investigates simulated production incidents using logs, metrics, and s
 ```
 TraceMind/
 ├── backend/
-│   ├── __init__.py        # Package marker
-│   ├── main.py            # FastAPI entry point (future)
-│   ├── database.py        # MongoDB connection (future)
-│   ├── log_streamer.py    # Continuous log streaming (future)
-│   ├── analyzer.py        # Analysis engine (future)
-│   └── requirements.txt   # Python dependencies
+│   ├── __init__.py                # Package marker
+│   ├── main.py                    # FastAPI entry point
+│   ├── database.py                # MongoDB connection
+│   ├── log_streamer.py            # Continuous log streaming
+│   ├── analyzer.py                # Analysis engine
+│   ├── telemetry_generator.py     # Log and Metric generator
+│   ├── test_telemetry_generator.py # Tests for generator
+│   └── requirements.txt           # Python dependencies
 ├── data/
 │   └── logs.json          # Simulated log data (future)
 ├── .env                   # Environment variables (not committed)
 ├── .gitignore
 └── README.md
 ```
+
+## Running the Telemetry Generator
+
+To generate a new batch of simulated incidents and telemetry, run:
+
+```bash
+python -m backend.telemetry_generator
+```
+
+This will output the deterministic generated scenarios to `data/logs.json`.
 
 ## Member 1 Responsibilities
 
