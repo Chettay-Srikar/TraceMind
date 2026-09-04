@@ -1,0 +1,101 @@
+{
+  "project": "SentinelAI",
+  "version": "1.0",
+  "metrics_source": "GET /analysis",
+  "dashboard_usage": "These fields formally define the schema for the metrics expected by the SentinelAI frontend dashboard. Actual values are populated dynamically via the GET /analysis endpoint.",
+  "metrics": [
+    {
+      "name": "health_score",
+      "type": "number",
+      "range": "0-100",
+      "higher_is_better": true,
+      "source_field": "health_score",
+      "description": "Overall system health score."
+    },
+    {
+      "name": "anomaly_score",
+      "type": "number",
+      "range": "0-100",
+      "higher_is_better": false,
+      "source_field": "anomaly_score",
+      "description": "Overall detected anomaly score."
+    },
+    {
+      "name": "severity",
+      "type": "string",
+      "values": [
+        "NORMAL",
+        "WARNING",
+        "HIGH",
+        "CRITICAL"
+      ],
+      "source_field": "severity",
+      "description": "Current system severity classification."
+    },
+    {
+      "name": "affected_service",
+      "type": "string",
+      "source_field": "affected_service",
+      "description": "Service with the strongest abnormal-log concentration."
+    },
+    {
+      "name": "incident_type",
+      "type": "string",
+      "values": [
+        "normal",
+        "database_failure",
+        "memory_problem",
+        "api_timeout",
+        "network_problem",
+        "cpu_overload"
+      ],
+      "source_field": "incident_type",
+      "description": "Detected incident category."
+    },
+    {
+      "name": "confidence",
+      "type": "number",
+      "range": "0-100",
+      "higher_is_better": true,
+      "source_field": "confidence",
+      "description": "Confidence in the detected incident analysis."
+    },
+    {
+      "name": "response_time_ms",
+      "type": "number",
+      "unit": "milliseconds",
+      "source_field": "metrics.average_response_time_ms",
+      "description": "Average response time across valid telemetry records."
+    },
+    {
+      "name": "total_log_count",
+      "type": "integer",
+      "source_field": "metrics.total_log_count",
+      "description": "Total number of logs analyzed."
+    },
+    {
+      "name": "abnormal_log_count",
+      "type": "integer",
+      "source_field": "metrics.abnormal_log_count",
+      "description": "Number of WARNING, ERROR, and CRITICAL logs."
+    },
+    {
+      "name": "warning_log_count",
+      "type": "integer",
+      "source_field": "metrics.warning_log_count",
+      "description": "Number of WARNING logs."
+    },
+    {
+      "name": "error_log_count",
+      "type": "integer",
+      "source_field": "metrics.error_log_count",
+      "description": "Number of ERROR logs."
+    },
+    {
+      "name": "critical_log_count",
+      "type": "integer",
+      "source_field": "metrics.critical_log_count",
+      "description": "Number of CRITICAL logs."
+    }
+  ]
+}
