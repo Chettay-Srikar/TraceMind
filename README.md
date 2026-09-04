@@ -8,7 +8,7 @@ TraceMind investigates simulated production incidents using logs, metrics, and s
 
 ## Current Phase
 
-**Step 5** — Implemented Recommendation Engine.
+**Step 6** — Implemented Action / Remediation Engine.
 
 ## Planned Technology Stack
 
@@ -31,11 +31,13 @@ TraceMind/
 │   ├── ai_investigator.py         # AI Investigation layer
 │   ├── solution_intelligence.py   # Solution Intelligence layer
 │   ├── recommendation_engine.py   # Deterministic Ranking layer
+│   ├── remediation_engine.py      # Action / Remediation layer
 │   ├── featherless_client.py      # Featherless AI client
 │   ├── test_correlation_engine.py # Tests for correlation engine
 │   ├── test_ai_investigator.py    # Tests for AI investigator
 │   ├── test_solution_intelligence.py # Tests for Solution Intelligence
 │   ├── test_recommendation_engine.py # Tests for Recommendation Engine
+│   ├── test_remediation_engine.py # Tests for Remediation Engine
 │   ├── telemetry_generator.py     # Log and Metric generator
 │   ├── test_telemetry_generator.py # Tests for generator
 │   └── requirements.txt           # Python dependencies
