@@ -1,0 +1,26 @@
+{
+  "project": "SentinelAI",
+  "version": "1.0.0",
+  "platform": "Render",
+  "service_type": "Web Service",
+  "runtime": "Python 3",
+  "root_directory": "",
+  "build_command": "pip install -r backend/requirements.txt",
+  "start_command": "uvicorn backend.main:app --host 0.0.0.0 --port $PORT",
+  "backend_entrypoint": "backend.main:app",
+  "health_check_path": "/health",
+  "environment_variables": [
+    "MONGODB_URI"
+  ],
+  "database": {
+    "provider": "MongoDB Atlas",
+    "database_name": "sentinel_ai",
+    "collection": "logs"
+  },
+  "notes": [
+    "MONGODB_URI must be configured as a Render environment variable.",
+    "Do not store credentials, passwords, connection strings, API keys, or secrets in this file.",
+    "The log streamer is not deployed as a separate Render service.",
+    "The deployed FastAPI backend reads logs from MongoDB Atlas."
+  ]
+}
