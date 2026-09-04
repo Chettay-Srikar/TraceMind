@@ -1,7 +1,8 @@
+ 
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { ServiceNode } from '../types';
-import { Layers, Activity, Search, Filter, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Layers, Activity, Search,  AlertTriangle,  } from 'lucide-react';
 import { StatusIndicator } from '../components/common/StatusIndicator';
 
 export const Services: React.FC = () => {

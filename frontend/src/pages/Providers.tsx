@@ -1,9 +1,10 @@
+ 
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { RelevantProvider } from '../types';
 import {
-  Search, ExternalLink, ShieldCheck, Cpu, Activity,
-  Database, CheckCircle2, Sparkles, Layers, Info
+      
+   CheckCircle2, Sparkles, Layers, Info
 } from 'lucide-react';
 
 export const Providers: React.FC = () => {

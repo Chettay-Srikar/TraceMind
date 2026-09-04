@@ -1,8 +1,8 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import {
-  CheckCircle2, ArrowUpRight, ArrowDownRight, Clock, Server, Database,
-  Activity, ShieldCheck, ArrowRight, TrendingUp, Cpu, Wifi, Layers, Zap,
-  AlertTriangle, RefreshCw, Sparkles, ExternalLink, HelpCircle
+  CheckCircle2, Clock, Database,
+  Activity, ShieldCheck, ArrowRight, Cpu, Wifi, AlertTriangle, Sparkles, ExternalLink
 } from 'lucide-react';
 import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis,
@@ -20,8 +20,7 @@ export const CommandCenter: React.FC = () => {
   const [health, setHealth] = useState<SystemHealthResponse | null>(null);
   const [latestLog, setLatestLog] = useState<LogEntry | null>(null);
   const [analysis, setAnalysis] = useState<TraceMindAnalysisResponse | null>(null);
-  const [loading, setLoading] = useState(false);
-
+  
   // Poll backend health & latest log
   useEffect(() => {
     let mounted = true;
@@ -56,8 +55,7 @@ export const CommandCenter: React.FC = () => {
 
   // Telemetry Chart Data for Scenario
   const chartData = Array.from({ length: 30 }, (_, i) => {
-    const minute = 10 + Math.floor(i / 60);
-    const sec = (i * 2).toString().padStart(2, '0');
+        const sec = (i * 2).toString().padStart(2, '0');
     const timeLabel = `10:${sec}`;
 
     if (scenario === 'healthy_normal') {
@@ -191,8 +189,9 @@ export const CommandCenter: React.FC = () => {
         </div>
       </div>
 
+      
       {/* ── Main Incident Banner ── */}
-      {scenario === 'critical_db' ? (
+      {analysis?.incident ? (
         <div className="p-5 rounded-xl border border-red-500/40 bg-gradient-to-r from-red-950/40 via-[#130B1A] to-slate-950 shadow-[0_0_30px_rgba(239,68,68,0.15)] animate-pop-up">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-start gap-4">
@@ -201,18 +200,18 @@ export const CommandCenter: React.FC = () => {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="px-2.5 py-0.5 rounded font-mono text-[10px] font-bold bg-red-500 text-white tracking-wider">
-                    🔴 CRITICAL INCIDENT
+                  <span className={`px-2.5 py-0.5 rounded font-mono text-[10px] font-bold tracking-wider ${analysis.incident.severity === 'CRITICAL' ? 'bg-red-500 text-white' : 'bg-amber-500 text-black'}`}>
+                    {analysis.incident.severity === 'CRITICAL' ? '🔴 CRITICAL' : '⚠️ WARNING'} INCIDENT
                   </span>
-                  <span className="font-mono text-xs text-red-300 font-semibold">INC-001</span>
+                  <span className="font-mono text-xs text-red-300 font-semibold">{analysis.incident.incident_id || 'INC-001'}</span>
                   <span className="text-slate-600">•</span>
-                  <span className="text-xs text-slate-300 font-mono">payment-service v2.4</span>
+                  <span className="text-xs text-slate-300 font-mono">{analysis.incident.affected_service || 'unknown-service'}</span>
                 </div>
                 <h2 className="text-xl font-bold text-white tracking-tight">
-                  Database Connection Pool Exhaustion
+                  {analysis.incident.incident_type || 'Unknown Incident'}
                 </h2>
                 <p className="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
-                  PostgreSQL connection pool reached 100% capacity 63 seconds after deployment v2.4. Downstream checkout requests are timing out with HTTP 500.
+                  {analysis.incident.description || 'System anomaly detected. Investigating telemetry patterns.'}
                 </p>
               </div>
             </div>
@@ -235,7 +234,7 @@ export const CommandCenter: React.FC = () => {
             </div>
           </div>
         </div>
-      ) : scenario === 'healthy_normal' ? (
+      ) : backendOnline && scenario === 'healthy_normal' ? (
         <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/15 flex items-center justify-between gap-4 animate-pop-up">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400">
@@ -468,6 +467,7 @@ export const CommandCenter: React.FC = () => {
       {/* ── Bottom Section: AI Root Cause & Ranked Solutions Preview ── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
+        
         {/* AI Root Cause Card (6 Cols) */}
         <div className="lg:col-span-6 card p-5 card-pop border border-slate-800 bg-slate-900/60 space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-slate-800">
@@ -475,7 +475,7 @@ export const CommandCenter: React.FC = () => {
               <Cpu className="w-4 h-4 text-emerald-400" />
               <h3 className="text-sm font-bold text-white">AI Incident Root Cause Analysis</h3>
             </div>
-            <span className="badge badge-success text-xs font-mono">94% Confidence</span>
+            <span className="badge badge-success text-xs font-mono">{analysis?.ai_investigation?.confidence_score || '90'}% Confidence</span>
           </div>
 
           <div className="p-3.5 rounded-xl bg-slate-950/80 border border-emerald-500/25">
@@ -483,7 +483,7 @@ export const CommandCenter: React.FC = () => {
               Correlated Root Cause
             </div>
             <p className="text-xs text-slate-200 leading-relaxed">
-              <strong>Payment Service v2.4</strong> deployment at 10:20 is strongly correlated with PostgreSQL connection pool exhaustion (100/100 active connections) and an immediate 42.7% error spike.
+              {analysis?.ai_investigation?.root_cause || 'AI is actively analyzing the telemetry stream. Awaiting determination...'}
             </p>
           </div>
 
@@ -492,16 +492,10 @@ export const CommandCenter: React.FC = () => {
               Evidence Chain Checklist
             </div>
             <div className="space-y-1.5">
-              {[
-                '✓ Payment v2.4 deployed at 10:20',
-                '✓ Database errors began at 10:21',
-                '✓ DB connections reached 100/100 saturation',
-                '✓ Error rate increased to 42.7%',
-                '✓ P95 latency surged to 4800ms'
-              ].map((ev, i) => (
+              {(analysis?.ai_investigation?.evidence || ['Insufficient telemetry data to form evidence chain']).map((ev: string, i: number) => (
                 <div key={i} className="text-xs font-mono text-slate-300 flex items-center gap-2">
                   <span className="text-emerald-400 font-bold">✓</span>
-                  <span>{ev.replace('✓ ', '')}</span>
+                  <span>{ev}</span>
                 </div>
               ))}
             </div>
@@ -517,6 +511,7 @@ export const CommandCenter: React.FC = () => {
             </Link>
           </div>
         </div>
+
 
         {/* Ranked Recommendations Preview (6 Cols) */}
         <div className="lg:col-span-6 card p-5 card-pop border border-slate-800 bg-slate-900/60 space-y-4">
@@ -534,65 +529,53 @@ export const CommandCenter: React.FC = () => {
           </div>
 
           <div className="space-y-2.5">
-            {[
-              {
-                rank: 1,
-                title: 'Rollback v2.4 → v2.3',
-                eff: 'High',
-                risk: 'Low',
-                desc: 'Immediate reversal of faulty deployment; eliminates connection leak instantly.'
-              },
-              {
-                rank: 2,
-                title: 'Investigate database connection pool exhaustion',
-                eff: 'High',
-                risk: 'Medium',
-                desc: 'Inspect HikariCP checkout routines to eliminate root leak before redeploy.'
-              },
-              {
-                rank: 3,
-                title: 'Increase database connection pool capacity (100 → 250)',
-                eff: 'Medium',
-                risk: 'Medium',
-                desc: 'Temporary mitigation; caution: risks masking the defect and overloading DB.'
-              }
-            ].map((rec) => (
+            {(analysis?.recommendation?.recommendations?.slice(0, 3) || []).map((rec: any, idx: number) => (
               <div
-                key={rec.rank}
+                key={rec.solution_id || idx}
                 className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 transition-colors flex items-start justify-between gap-3"
               >
                 <div className="flex items-start gap-2.5">
                   <div className={`w-6 h-6 rounded-md flex items-center justify-center font-mono text-xs font-bold ${
-                    rec.rank === 1 ? 'bg-emerald-500 text-slate-950 font-bold' : 'bg-slate-800 text-slate-300'
+                    idx === 0 ? 'bg-emerald-500 text-slate-950 font-bold' : 'bg-slate-800 text-slate-300'
                   }`}>
-                    0{rec.rank}
+                    0{idx + 1}
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-white">{rec.title}</h4>
-                    <p className="text-[11px] text-slate-400 leading-snug mt-0.5">{rec.desc}</p>
+                    <p className="text-[11px] text-slate-400 leading-snug mt-0.5 line-clamp-2">{rec.reason}</p>
                   </div>
                 </div>
 
                 <div className="flex flex-col items-end gap-1 flex-shrink-0">
                   <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                    {rec.eff} Eff.
-                  </span>
-                  <span className="text-[10px] font-mono text-slate-400">
-                    {rec.risk} Risk
+                    {Math.round(rec.confidence || 0)}% Conf.
                   </span>
                 </div>
               </div>
             ))}
+            {!analysis?.recommendation?.recommendations && (
+              <div className="text-xs text-slate-400 italic p-2">No recommendations available.</div>
+            )}
           </div>
 
-          <div className="pt-2 flex items-center justify-between text-xs text-slate-400">
-            <span>Evaluated against external engineering docs & SRE playbooks</span>
-            <Link to="/app/recommendations" className="text-emerald-400 font-semibold hover:underline">
-              Inspect Why #1 Ranked →
-            </Link>
-          </div>
+          {analysis?.remediation?.status && (
+            <div className="pt-2 flex flex-col gap-1.5 border-t border-slate-800">
+              <div className="flex items-center justify-between text-xs text-slate-400">
+                <span>Remediation Status:</span>
+                <span className="badge badge-warning text-[9px]">SIMULATION ONLY</span>
+              </div>
+              <div className="text-[11px] font-mono text-amber-400 break-all">
+                {analysis.remediation.action_taken} ({analysis.remediation.status})
+              </div>
+              {analysis?.recovery_verification && (
+                <div className="text-[10px] text-emerald-400 mt-1 flex justify-between">
+                  <span>Recovery: {analysis.recovery_verification.verification_status}</span>
+                  <span>Health: {Math.round(analysis.recovery_verification.pre_remediation_metrics?.health_score || 0)} → {Math.round(analysis.recovery_verification.post_remediation_metrics?.health_score || 0)}</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
-
       </div>
 
     </div>

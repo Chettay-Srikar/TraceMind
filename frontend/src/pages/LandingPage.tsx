@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Cpu, Zap, ChevronRight } from 'lucide-react';

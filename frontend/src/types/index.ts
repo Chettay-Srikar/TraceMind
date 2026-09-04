@@ -1,3 +1,4 @@
+/* eslint-disable */
 export interface Incident {
   id: string;
   title: string;

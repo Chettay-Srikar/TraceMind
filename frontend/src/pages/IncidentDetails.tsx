@@ -1,3 +1,4 @@
+ 
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../services/api';
@@ -6,7 +7,7 @@ import { Badge } from '../components/common/Badge';
 import { StatusIndicator } from '../components/common/StatusIndicator';
 import { 
   ArrowLeft, Clock, AlertTriangle, ShieldAlert, Cpu, Activity, 
-  GitPullRequest, Server, CheckCircle2, Share2, MessageSquare, AlertCircle, Lightbulb
+   Server, CheckCircle2, Share2,   Lightbulb
 } from 'lucide-react';
 
 export const IncidentDetails: React.FC = () => {

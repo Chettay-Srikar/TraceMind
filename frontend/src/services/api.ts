@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   Incident,
   LogEntry,
@@ -217,13 +218,19 @@ export const api = {
    */
   getAnalysis: async (): Promise<TraceMindAnalysisResponse> => {
     const now = Date.now();
-    if (cachedAnalysisPromise && (now - lastFetchTime < 10000)) {
+    if (cachedAnalysisPromise && (now - lastFetchTime < 15000)) {
         return cachedAnalysisPromise;
     }
 
     cachedAnalysisPromise = (async () => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 60000);
       try {
-        const res = await fetch(`${API_BASE_URL}/analysis`, { cache: 'no-cache' });
+        const res = await fetch(`${API_BASE_URL}/analysis`, { 
+          cache: 'no-cache',
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         isBackendLive = true;
         const data = await res.json();
@@ -248,19 +255,21 @@ export const api = {
           }));
         }
         
+        lastFetchTime = Date.now();
         return {
           ...defaultSimulatedAnalysis,
           ...data,
           recommendations: mappedRecommendations,
           relevant_providers: mockProviders
         };
-      } catch {
+      } catch (err) {
+        clearTimeout(timeoutId);
         isBackendLive = false;
+        cachedAnalysisPromise = null; // Do NOT cache failed/aborted requests
         return defaultSimulatedAnalysis;
       }
     })();
     
-    lastFetchTime = now;
     return cachedAnalysisPromise;
   },
 

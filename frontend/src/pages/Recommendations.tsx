@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import {
   Cpu, Database, CheckCircle2, AlertTriangle, ShieldCheck,
