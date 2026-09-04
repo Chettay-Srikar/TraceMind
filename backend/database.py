@@ -17,7 +17,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure
+from pymongo.errors import ConnectionFailure, PyMongoError
 
 # ─── Load environment variables ─────────────────────────────────────────────
 # .env lives in the project root (one level above backend/).
@@ -52,15 +52,13 @@ def test_connection() -> bool:
     """Ping MongoDB Atlas to verify the connection is alive.
 
     Returns True on success.
-    Raises ConnectionFailure (or RuntimeError) if the ping fails.
+    Raises PyMongoError if the ping fails (e.g. timeout, auth failure, dns error).
     """
     try:
         client.admin.command("ping")
         return True
-    except ConnectionFailure as err:
-        raise ConnectionFailure(
-            f"Could not connect to MongoDB Atlas: {err}"
-        ) from err
+    except PyMongoError:
+        raise
     except Exception as err:
         raise RuntimeError(
             f"Unexpected error while testing MongoDB connection: {err}"
