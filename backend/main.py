@@ -13,6 +13,7 @@ from pydantic import BaseModel
 from backend.database import get_logs_collection, test_connection
 from backend.analyzer import analyze_logs
 from backend.ai_investigator import investigate_incident
+from backend.solution_intelligence import generate_solutions
 import os
 
 app = FastAPI(title="TraceMind API", description="AI-powered software incident-response agent API")
@@ -157,11 +158,14 @@ async def get_analysis():
         # Enhance with AI Investigation
         enhanced_result, ai_status = investigate_incident(deterministic_result)
         
-        # Add AI status to response
-        enhanced_result["ai_provider"] = "featherless" if ai_status == "connected" else "deterministic_fallback"
-        enhanced_result["ai_status"] = ai_status
+        # Enhance with Solution Intelligence
+        final_result, intel_status = generate_solutions(enhanced_result)
         
-        return enhanced_result
+        # Add AI status to response
+        final_result["ai_provider"] = "featherless" if ai_status == "connected" else "deterministic_fallback"
+        final_result["ai_status"] = ai_status
+        
+        return final_result
     except PyMongoError:
         raise HTTPException(status_code=500, detail="Database connection error")
 

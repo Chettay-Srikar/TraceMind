@@ -8,7 +8,7 @@ TraceMind investigates simulated production incidents using logs, metrics, and s
 
 ## Current Phase
 
-**Step 3** — Implemented AI Investigation.
+**Step 4** — Implemented Solution Intelligence.
 
 ## Planned Technology Stack
 
@@ -29,9 +29,11 @@ TraceMind/
 │   ├── analyzer.py                # Analysis engine
 │   ├── correlation_engine.py      # Incident progression and correlation
 │   ├── ai_investigator.py         # AI Investigation layer
+│   ├── solution_intelligence.py   # Solution Intelligence layer
 │   ├── featherless_client.py      # Featherless AI client
 │   ├── test_correlation_engine.py # Tests for correlation engine
 │   ├── test_ai_investigator.py    # Tests for AI investigator
+│   ├── test_solution_intelligence.py # Tests for Solution Intelligence
 │   ├── telemetry_generator.py     # Log and Metric generator
 │   ├── test_telemetry_generator.py # Tests for generator
 │   └── requirements.txt           # Python dependencies
