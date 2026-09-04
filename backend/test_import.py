@@ -367,3 +367,63 @@ def test_get_analysis_cross_user_isolation(mock_get_analysis_col, mock_urllib):
     
     # Reset overrides
     app.dependency_overrides = {}
+
+
+
+def test_cors_localhost():
+    headers = {"Origin": "http://localhost:5173"}
+    response = client.get("/", headers=headers)
+    assert response.status_code == 200
+    assert response.headers.get("access-control-allow-origin") == "http://localhost:5173"
+
+def test_cors_configured_production_frontend(monkeypatch):
+    import importlib
+    import backend.main
+    from fastapi.testclient import TestClient
+
+    monkeypatch.setenv("FRONTEND_URL", "https://example.trace-mind.com")
+    importlib.reload(backend.main)
+    local_client = TestClient(backend.main.app)
+
+    headers = {"Origin": "https://example.trace-mind.com"}
+    response = local_client.get("/", headers=headers)
+    assert response.status_code == 200
+    assert response.headers.get("access-control-allow-origin") == "https://example.trace-mind.com"
+
+    monkeypatch.delenv("FRONTEND_URL", raising=False)
+    importlib.reload(backend.main)
+
+def test_cors_vercel_explicit_allowed():
+    # Test allowed vercel origin 1
+    headers = {"Origin": "https://trace-mind-git-main-chettay-srikars-projects.vercel.app"}
+    response = client.get("/", headers=headers)
+    assert response.status_code == 200
+    assert response.headers.get("access-control-allow-origin") == "https://trace-mind-git-main-chettay-srikars-projects.vercel.app"
+
+    # Test allowed vercel origin 2
+    headers = {"Origin": "https://trace-mind-inky.vercel.app"}
+    response = client.get("/", headers=headers)
+    assert response.status_code == 200
+    assert response.headers.get("access-control-allow-origin") == "https://trace-mind-inky.vercel.app"
+
+def test_cors_vercel_rejected():
+    # Should reject an arbitrary vercel project
+    headers = {"Origin": "https://evil-project.vercel.app"}
+    response = client.get("/", headers=headers)
+    assert response.headers.get("access-control-allow-origin") is None
+
+    # Should reject something trying to bypass regex matching
+    headers = {"Origin": "https://trace-mind-evil-project.vercel.app"}
+    response = client.get("/", headers=headers)
+    assert response.headers.get("access-control-allow-origin") is None
+
+    # Should reject standard attacker domain
+    headers = {"Origin": "https://attacker.vercel.app"}
+    response = client.get("/", headers=headers)
+    assert response.headers.get("access-control-allow-origin") is None
+
+def test_cors_unrelated_origin():
+    # Should reject non-vercel unrelated domain
+    headers = {"Origin": "https://evil-attacker.com"}
+    response = client.get("/", headers=headers)
+    assert response.headers.get("access-control-allow-origin") is None
