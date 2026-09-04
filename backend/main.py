@@ -182,58 +182,42 @@ async def get_anomalies(user_id: str = Depends(get_current_user)):
     except PyMongoError:
         raise HTTPException(status_code=500, detail="Database connection error")
 
+
+def _execute_analysis_pipeline(user_id: str, ensure_logs: bool = False):
+    collection = get_logs_collection()
+    cursor = collection.find({"user_id": user_id}).sort("timestamp", 1)
+    all_logs = [serialize_mongo_doc(doc) for doc in cursor]
+    
+    if ensure_logs and not all_logs:
+        raise ValueError("No telemetry imported for this user.")
+        
+    deterministic_result = analyze_logs(all_logs)
+    enhanced_result, ai_status = investigate_incident(deterministic_result)
+    sol_result, intel_status = generate_solutions(enhanced_result)
+    rec_result, rec_status = rank_solutions(sol_result)
+    rem_result, rem_status = execute_remediation(rec_result)
+    final_result, ver_status = verify_recovery(rem_result)
+    
+    final_result["ai_provider"] = "featherless" if ai_status == "connected" else "deterministic_fallback"
+    final_result["ai_status"] = ai_status
+    
+    return final_result
+
+@app.post("/analysis/run")
+async def run_analysis(user_id: str = Depends(get_current_user)):
+    try:
+        return _execute_analysis_pipeline(user_id, ensure_logs=True)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except PyMongoError:
+        raise HTTPException(status_code=500, detail="Database connection error")
+
 @app.get("/analysis")
 async def get_analysis(user_id: str = Depends(get_current_user)):
     """
     Returns the current deterministic TraceMind incident analysis.
-    
-    The response contains the following fields:
-    - health_score
-    - severity
-    - anomaly_score
-    - affected_service
-    - incident_type
-    - root_cause
-    - confidence
-    - recommended_action
-    - evidence
-    - metrics
-      - total_log_count
-      - abnormal_log_count
-      - critical_log_count
-      - error_log_count
-      - warning_log_count
-      - average_response_time_ms
     """
     try:
-        collection = get_logs_collection()
-        # Fetch all logs for a complete analysis
-        cursor = collection.find({"user_id": user_id}).sort("timestamp", 1)
-        all_logs = [serialize_mongo_doc(doc) for doc in cursor]
-        
-        # Analyze them deterministically
-        deterministic_result = analyze_logs(all_logs)
-        
-        # Enhance with AI Investigation
-        enhanced_result, ai_status = investigate_incident(deterministic_result)
-        
-        # Enhance with Solution Intelligence
-        sol_result, intel_status = generate_solutions(enhanced_result)
-        
-        # Enhance with Recommendation Engine
-        rec_result, rec_status = rank_solutions(sol_result)
-        
-        # Execute Action / Remediation
-        rem_result, rem_status = execute_remediation(rec_result)
-        
-        # Verify Recovery
-        final_result, ver_status = verify_recovery(rem_result)
-        
-        # Add AI status to response
-        final_result["ai_provider"] = "featherless" if ai_status == "connected" else "deterministic_fallback"
-        final_result["ai_status"] = ai_status
-        
-        return final_result
+        return _execute_analysis_pipeline(user_id, ensure_logs=False)
     except PyMongoError:
         raise HTTPException(status_code=500, detail="Database connection error")
-

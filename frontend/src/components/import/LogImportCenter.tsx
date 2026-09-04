@@ -10,6 +10,7 @@ export const LogImportCenter: React.FC<LogImportCenterProps> = ({ onSuccess }) =
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<{ imported_count: number } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -74,6 +75,18 @@ export const LogImportCenter: React.FC<LogImportCenterProps> = ({ onSuccess }) =
     }
   };
 
+  const handleAnalyze = async () => {
+    setAnalyzing(true);
+    setError(null);
+    try {
+      await api.runAnalysis();
+      onSuccess(); // Triggers CommandCenter to re-fetch and un-render LogImportCenter
+    } catch (err: unknown) {
+      setError((err as Error).message || 'An error occurred during analysis.');
+      setAnalyzing(false);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] p-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="w-full max-w-2xl text-center mb-8">
@@ -100,7 +113,13 @@ export const LogImportCenter: React.FC<LogImportCenterProps> = ({ onSuccess }) =
           className="hidden" 
         />
         
-        {loading ? (
+        {analyzing ? (
+          <div className="flex flex-col items-center">
+            <Loader2 className="w-12 h-12 text-indigo-500 animate-spin mb-4" />
+            <p className="text-white font-medium text-lg mb-1">Running AI Investigation...</p>
+            <p className="text-slate-400">This may take up to 30 seconds.</p>
+          </div>
+        ) : loading ? (
           <div className="flex flex-col items-center">
             <Loader2 className="w-12 h-12 text-green-500 animate-spin mb-4" />
             <p className="text-slate-300 font-medium">Processing telemetry...</p>
@@ -112,9 +131,17 @@ export const LogImportCenter: React.FC<LogImportCenterProps> = ({ onSuccess }) =
             </div>
             <p className="text-white font-medium text-lg mb-1">Upload Successful</p>
             <p className="text-green-400 mb-6">{success.imported_count} records imported.</p>
+            
+            {error && (
+              <div className="mb-6 flex items-start gap-2 text-red-400 bg-red-500/10 px-4 py-3 rounded-lg border border-red-500/20 max-w-lg text-left">
+                <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                <span className="text-sm">{error}</span>
+              </div>
+            )}
+            
             <button 
-              onClick={onSuccess}
-              className="btn btn-primary px-8 py-3"
+              onClick={handleAnalyze}
+              className="btn btn-primary px-8 py-3 flex items-center"
             >
               Analyze telemetry <ArrowRight className="w-4 h-4 ml-2" />
             </button>
