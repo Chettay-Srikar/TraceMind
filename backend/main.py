@@ -16,6 +16,7 @@ from backend.ai_investigator import investigate_incident
 from backend.solution_intelligence import generate_solutions
 from backend.recommendation_engine import rank_solutions
 from backend.remediation_engine import execute_remediation
+from backend.recovery_verification import verify_recovery
 import os
 
 app = FastAPI(title="TraceMind API", description="AI-powered software incident-response agent API")
@@ -167,7 +168,10 @@ async def get_analysis():
         rec_result, rec_status = rank_solutions(sol_result)
         
         # Execute Action / Remediation
-        final_result, rem_status = execute_remediation(rec_result)
+        rem_result, rem_status = execute_remediation(rec_result)
+        
+        # Verify Recovery
+        final_result, ver_status = verify_recovery(rem_result)
         
         # Add AI status to response
         final_result["ai_provider"] = "featherless" if ai_status == "connected" else "deterministic_fallback"
