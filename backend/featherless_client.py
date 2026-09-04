@@ -3,14 +3,19 @@ import json
 import logging
 import re
 from openai import OpenAI
+from typing import Dict, Any, Tuple
 
 logger = logging.getLogger(__name__)
 
-def enhance_analysis(deterministic_result, logs_context):
+def run_investigation(prompt: str) -> Tuple[Dict[str, Any], str]:
+    """
+    Communicates with Featherless AI to run the investigation prompt.
+    Returns (parsed_json_dict, status_string).
+    """
     api_key = os.getenv("FEATHERLESS_API_KEY")
     if not api_key:
-        logger.warning("FEATHERLESS_API_KEY not found. Falling back to deterministic analysis.")
-        return deterministic_result, "unavailable"
+        logger.warning("FEATHERLESS_API_KEY not found.")
+        return {}, "unavailable"
 
     try:
         client = OpenAI(
@@ -19,34 +24,6 @@ def enhance_analysis(deterministic_result, logs_context):
             timeout=15.0 # 15 seconds timeout
         )
         
-        severity = deterministic_result.get("severity")
-        incident = deterministic_result.get("incident_type")
-        evidence = deterministic_result.get("evidence", [])
-        metrics = deterministic_result.get("metrics", {})
-        incident_obj = deterministic_result.get("incident", {})
-        
-        prompt = f"""You are an incident-analysis assistant for TraceMind.
-Do not invent facts. Base conclusions only on the supplied deterministic metrics and evidence.
-Treat deterministic severity and anomaly scores as authoritative.
-Do not expose secrets or credentials.
-
-Incident Type: {incident}
-Severity: {severity}
-Metrics: {json.dumps(metrics)}
-Evidence: {json.dumps(evidence)}
-Correlated Incident Details: {json.dumps(incident_obj)}
-
-Analyze this data. Provide a practical explanation of the likely root cause and recommend practical remediation.
-Keep the response concise and suitable for a monitoring dashboard.
-
-Return exactly and ONLY a valid JSON object with this structure:
-{{
-  "root_cause": "your root cause here",
-  "recommended_action": "your recommendation here",
-  "explanation": "your brief explanation here"
-}}
-"""
-
         response = client.chat.completions.create(
             model="unsloth/Llama-3.3-70B-Instruct",
             messages=[
@@ -65,13 +42,8 @@ Return exactly and ONLY a valid JSON object with this structure:
         else:
             ai_data = json.loads(content)
             
-        enhanced = dict(deterministic_result)
-        enhanced["root_cause"] = ai_data.get("root_cause", deterministic_result.get("root_cause"))
-        enhanced["recommended_action"] = ai_data.get("recommended_action", deterministic_result.get("recommended_action"))
-        enhanced["explanation"] = ai_data.get("explanation", "AI analysis complete.")
-        
-        return enhanced, "connected"
+        return ai_data, "connected"
         
     except Exception as e:
         logger.error(f"Featherless AI error: {e}")
-        return deterministic_result, "unavailable"
+        return {}, "unavailable"

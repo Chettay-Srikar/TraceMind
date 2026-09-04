@@ -12,7 +12,7 @@ from pydantic import BaseModel
 
 from backend.database import get_logs_collection, test_connection
 from backend.analyzer import analyze_logs
-from backend.featherless_client import enhance_analysis
+from backend.ai_investigator import investigate_incident
 import os
 
 app = FastAPI(title="TraceMind API", description="AI-powered software incident-response agent API")
@@ -154,8 +154,8 @@ async def get_analysis():
         # Analyze them deterministically
         deterministic_result = analyze_logs(all_logs)
         
-        # Enhance with Featherless AI reasoning
-        enhanced_result, ai_status = enhance_analysis(deterministic_result, all_logs)
+        # Enhance with AI Investigation
+        enhanced_result, ai_status = investigate_incident(deterministic_result)
         
         # Add AI status to response
         enhanced_result["ai_provider"] = "featherless" if ai_status == "connected" else "deterministic_fallback"
