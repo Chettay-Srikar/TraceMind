@@ -23,6 +23,7 @@ def enhance_analysis(deterministic_result, logs_context):
         incident = deterministic_result.get("incident_type")
         evidence = deterministic_result.get("evidence", [])
         metrics = deterministic_result.get("metrics", {})
+        incident_obj = deterministic_result.get("incident", {})
         
         prompt = f"""You are an incident-analysis assistant for TraceMind.
 Do not invent facts. Base conclusions only on the supplied deterministic metrics and evidence.
@@ -33,6 +34,7 @@ Incident Type: {incident}
 Severity: {severity}
 Metrics: {json.dumps(metrics)}
 Evidence: {json.dumps(evidence)}
+Correlated Incident Details: {json.dumps(incident_obj)}
 
 Analyze this data. Provide a practical explanation of the likely root cause and recommend practical remediation.
 Keep the response concise and suitable for a monitoring dashboard.

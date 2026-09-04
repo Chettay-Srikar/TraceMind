@@ -8,6 +8,7 @@ and recommended actions.
 
 from typing import List, Dict, Any
 from collections import Counter
+from backend.correlation_engine import correlate_incident
 
 def _safe_get(log: dict, key: str, default: Any = None) -> Any:
     """Safely get a value from a log dictionary."""
@@ -253,6 +254,7 @@ def analyze_logs(logs: List[dict]) -> Dict[str, Any]:
     confidence = calculate_confidence(logs, incident_type, affected_service)
     evidence = build_evidence(logs, severity, affected_service, incident_type)
     metrics = calculate_metrics(logs)
+    incident = correlate_incident(logs)
     
     return {
         "health_score": health_score,
@@ -264,7 +266,8 @@ def analyze_logs(logs: List[dict]) -> Dict[str, Any]:
         "confidence": confidence,
         "recommended_action": recommended_action,
         "evidence": evidence,
-        "metrics": metrics
+        "metrics": metrics,
+        "incident": incident
     }
 
 

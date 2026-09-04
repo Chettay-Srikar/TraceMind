@@ -8,7 +8,7 @@ TraceMind investigates simulated production incidents using logs, metrics, and s
 
 ## Current Phase
 
-**Step 1** — Implemented Simulated System and Log/Metric Generator.
+**Step 2** — Implemented Incident / Correlation Engine.
 
 ## Planned Technology Stack
 
@@ -29,6 +29,8 @@ TraceMind/
 │   ├── database.py                # MongoDB connection
 │   ├── log_streamer.py            # Continuous log streaming
 │   ├── analyzer.py                # Analysis engine
+│   ├── correlation_engine.py      # Incident progression and correlation
+│   ├── test_correlation_engine.py # Tests for correlation engine
 │   ├── telemetry_generator.py     # Log and Metric generator
 │   ├── test_telemetry_generator.py # Tests for generator
 │   └── requirements.txt           # Python dependencies
