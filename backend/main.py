@@ -12,6 +12,8 @@ from pydantic import BaseModel
 
 from backend.database import get_logs_collection, test_connection
 from backend.analyzer import analyze_logs
+from backend.featherless_client import enhance_analysis
+import os
 
 app = FastAPI(title="SentinelAI API", description="AI-powered software incident-response agent API")
 
@@ -60,6 +62,8 @@ async def health_check():
         all_logs = list(logs_cursor)
         analysis_result = analyze_logs(all_logs)
         
+        has_featherless = bool(os.getenv("FEATHERLESS_API_KEY"))
+        
         return {
             "api_status": "healthy",
             "mongodb_status": "connected" if db_ok else "disconnected",
@@ -68,7 +72,8 @@ async def health_check():
             "severity": analysis_result.get("severity"),
             "affected_service": analysis_result.get("affected_service"),
             "incident_type": analysis_result.get("incident_type"),
-            "anomaly_score": analysis_result.get("anomaly_score")
+            "anomaly_score": analysis_result.get("anomaly_score"),
+            "ai_status": "configured" if has_featherless else "unconfigured"
         }
     except PyMongoError:
         # Avoid exposing credentials in error message
@@ -146,8 +151,17 @@ async def get_analysis():
         cursor = collection.find({}).sort("timestamp", 1)
         all_logs = list(cursor)
         
-        # Analyze them
-        return analyze_logs(all_logs)
+        # Analyze them deterministically
+        deterministic_result = analyze_logs(all_logs)
+        
+        # Enhance with Featherless AI reasoning
+        enhanced_result, ai_status = enhance_analysis(deterministic_result, all_logs)
+        
+        # Add AI status to response
+        enhanced_result["ai_provider"] = "featherless" if ai_status == "connected" else "deterministic_fallback"
+        enhanced_result["ai_status"] = ai_status
+        
+        return enhanced_result
     except PyMongoError:
         raise HTTPException(status_code=500, detail="Database connection error")
 
