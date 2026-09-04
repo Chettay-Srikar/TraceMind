@@ -200,6 +200,19 @@ def _execute_analysis_pipeline(user_id: str, ensure_logs: bool = False):
     
     final_result["ai_provider"] = "featherless" if ai_status == "connected" else "deterministic_fallback"
     final_result["ai_status"] = ai_status
+    final_result["user_id"] = user_id
+    
+    # Persist the analysis
+    from backend.database import get_analysis_collection
+    analysis_col = get_analysis_collection()
+    analysis_col.update_one(
+        {"user_id": user_id},
+        {"$set": final_result},
+        upsert=True
+    )
+    
+    if "_id" in final_result:
+        final_result.pop("_id")
     
     return final_result
 
@@ -215,9 +228,15 @@ async def run_analysis(user_id: str = Depends(get_current_user)):
 @app.get("/analysis")
 async def get_analysis(user_id: str = Depends(get_current_user)):
     """
-    Returns the current deterministic TraceMind incident analysis.
+    Returns the persisted TraceMind incident analysis for the user.
     """
     try:
-        return _execute_analysis_pipeline(user_id, ensure_logs=False)
+        from backend.database import get_analysis_collection
+        analysis_col = get_analysis_collection()
+        doc = analysis_col.find_one({"user_id": user_id})
+        if doc:
+            return serialize_mongo_doc(doc)
+            
+        raise HTTPException(status_code=404, detail="No analysis found. Run analysis first.")
     except PyMongoError:
         raise HTTPException(status_code=500, detail="Database connection error")

@@ -112,7 +112,8 @@ def test_import_unauthorized():
     assert response.status_code == 401
 
 @patch("urllib.request.urlopen", side_effect=mock_urlopen)
-def test_analysis_run_success(mock_urllib, auth_headers):
+@patch('backend.database.get_analysis_collection')
+def test_analysis_run_success(mock_get_analysis_col, mock_urllib, auth_headers):
     # Test valid analysis run with logs
     with patch("backend.main.get_logs_collection") as mock_get_col:
         mock_col = MagicMock()
@@ -146,7 +147,8 @@ def test_analysis_run_success(mock_urllib, auth_headers):
                                 mock_col.find.assert_called_with({"user_id": "test_user_123"})
 
 @patch("urllib.request.urlopen", side_effect=mock_urlopen)
-def test_analysis_run_empty(mock_urllib, auth_headers):
+@patch('backend.database.get_analysis_collection')
+def test_analysis_run_empty(mock_get_analysis_col, mock_urllib, auth_headers):
     # Test empty logs returns 400
     with patch("backend.main.get_logs_collection") as mock_get_col:
         mock_col = MagicMock()
@@ -162,7 +164,8 @@ def test_analysis_run_unauthorized():
     assert response.status_code in [401, 403]
 
 @patch("urllib.request.urlopen", side_effect=mock_urlopen)
-def test_analysis_run_cross_user_isolation(mock_urllib, auth_headers):
+@patch('backend.database.get_analysis_collection')
+def test_analysis_run_cross_user_isolation(mock_get_analysis_col, mock_urllib, auth_headers):
     # Test cross-user isolation: user A should not see user B's logs
     with patch("backend.main.get_logs_collection") as mock_get_col:
         mock_col = MagicMock()
@@ -201,3 +204,166 @@ def test_analysis_run_cross_user_isolation(mock_urllib, auth_headers):
                                 assert len(called_logs) == 1
                                 assert called_logs[0]["user_id"] == "test_user_123"
                                 assert called_logs[0]["_id"] == "test_id_A"
+
+@patch("urllib.request.urlopen", side_effect=mock_urlopen)
+def test_get_analysis_success(mock_urllib, auth_headers):
+    with patch("backend.database.get_analysis_collection") as mock_get_col:
+        mock_col = MagicMock()
+        mock_col.find_one.return_value = {"_id": "fake_id", "user_id": "test_user_123", "health_score": 50}
+        mock_get_col.return_value = mock_col
+        
+        response = client.get("/analysis", headers=auth_headers)
+        assert response.status_code == 200
+        assert response.json()["health_score"] == 50
+        mock_col.find_one.assert_called_with({"user_id": "test_user_123"})
+
+@patch("urllib.request.urlopen", side_effect=mock_urlopen)
+def test_get_analysis_not_found(mock_urllib, auth_headers):
+    with patch("backend.database.get_analysis_collection") as mock_get_col:
+        mock_col = MagicMock()
+        mock_col.find_one.return_value = None
+        mock_get_col.return_value = mock_col
+        
+        response = client.get("/analysis", headers=auth_headers)
+        assert response.status_code == 404
+        assert "No analysis found" in response.json()["detail"]
+
+
+@patch("urllib.request.urlopen", side_effect=mock_urlopen)
+@patch("backend.database.get_analysis_collection")
+@patch("backend.main.get_logs_collection")
+def test_analysis_run_failed_rerun_safety(mock_get_logs_col, mock_get_analysis_col, mock_urllib, auth_headers):
+    # Setup mock collections
+    mock_logs_col = MagicMock()
+    mock_logs_col.count_documents.return_value = 5
+    mock_logs_col.find.return_value.sort.return_value = [{"level": "ERROR", "message": "test"}]
+    mock_get_logs_col.return_value = mock_logs_col
+
+    mock_analysis_col = MagicMock()
+    mock_get_analysis_col.return_value = mock_analysis_col
+    
+    # 1. Simulate existing successful analysis
+    existing_analysis = {"_id": "fake_id", "user_id": "test_user_123", "health_score": 99}
+    mock_analysis_col.find_one.return_value = existing_analysis
+    
+    # 2. Simulate failed run by mocking the internal pipeline function
+    with patch("backend.main._execute_analysis_pipeline") as mock_pipeline:
+        mock_pipeline.side_effect = Exception("Pipeline failed")
+        
+        # We need to catch the exception in test client if it bubbles up
+        try:
+            response = client.post("/analysis/run", headers=auth_headers)
+            assert response.status_code == 500
+        except Exception as e:
+            assert str(e) == "Pipeline failed"
+            
+        # 3. Confirm the failed run doesn't delete/replace previous analysis
+        mock_analysis_col.update_one.assert_not_called()
+        mock_analysis_col.delete_one.assert_not_called()
+        
+    # 4. Confirm GET /analysis still returns the previous successful result
+    get_response = client.get("/analysis", headers=auth_headers)
+    assert get_response.status_code == 200
+    assert get_response.json()["health_score"] == 99
+
+
+@patch("urllib.request.urlopen", side_effect=mock_urlopen)
+@patch("backend.database.get_analysis_collection")
+@patch("backend.main.get_logs_collection")
+def test_analysis_run_persistence_details(mock_get_logs_col, mock_get_analysis_col, mock_urllib, auth_headers):
+    # Setup mock collections
+    mock_logs_col = MagicMock()
+    mock_logs_col.count_documents.return_value = 5
+    mock_logs_col.find.return_value.sort.return_value = [{"level": "ERROR", "message": "test"}]
+    mock_get_logs_col.return_value = mock_logs_col
+
+    mock_analysis_col = MagicMock()
+    mock_get_analysis_col.return_value = mock_analysis_col
+    
+    # Run successful analysis
+    response = client.post("/analysis/run", headers=auth_headers)
+    assert response.status_code == 200
+    
+    # Verify persistence operation details
+    mock_analysis_col.update_one.assert_called_once()
+    args, kwargs = mock_analysis_col.update_one.call_args
+    
+    filter_arg = args[0]
+    update_arg = args[1]
+    
+    # Verify filter
+    assert filter_arg == {"user_id": "test_user_123"}
+    
+    # Verify upsert
+    assert kwargs.get("upsert") is True
+    
+    # Verify result contains complete analysis response and user_id
+    set_data = update_arg.get("$set", {})
+    assert set_data["user_id"] == "test_user_123"
+    assert "health_score" in set_data
+    assert "ai_investigation" in set_data
+
+
+@patch("urllib.request.urlopen", side_effect=mock_urlopen)
+@patch("backend.database.get_analysis_collection")
+@patch("backend.main.get_logs_collection")
+def test_analysis_run_rerun_replacement(mock_get_logs_col, mock_get_analysis_col, mock_urllib, auth_headers):
+    # Setup mock collections
+    mock_logs_col = MagicMock()
+    mock_logs_col.count_documents.return_value = 5
+    mock_logs_col.find.return_value.sort.return_value = [{"level": "ERROR", "message": "test"}]
+    mock_get_logs_col.return_value = mock_logs_col
+
+    mock_analysis_col = MagicMock()
+    mock_get_analysis_col.return_value = mock_analysis_col
+    
+    # First run
+    client.post("/analysis/run", headers=auth_headers)
+    
+    # Second run
+    client.post("/analysis/run", headers=auth_headers)
+    
+    # Verify update_one was called twice, both with upsert=True and same filter
+    assert mock_analysis_col.update_one.call_count == 2
+    for call in mock_analysis_col.update_one.call_args_list:
+        args, kwargs = call
+        assert args[0] == {"user_id": "test_user_123"}
+        assert kwargs.get("upsert") is True
+
+
+@patch("urllib.request.urlopen", side_effect=mock_urlopen)
+@patch("backend.database.get_analysis_collection")
+def test_get_analysis_cross_user_isolation(mock_get_analysis_col, mock_urllib):
+    mock_col = MagicMock()
+    mock_get_analysis_col.return_value = mock_col
+    
+    # User A requests analysis
+    def mock_find_one(query):
+        if query.get("user_id") == "userA":
+            return {"_id": "idA", "user_id": "userA", "health_score": 50}
+        if query.get("user_id") == "test_user_123":
+            return {"_id": "idB", "user_id": "test_user_123", "health_score": 90}
+        return None
+        
+    mock_col.find_one.side_effect = mock_find_one
+    
+    # GET as User A (Requires overriding the dependency in test client for a different user)
+    # The default auth_headers fixture uses "test_user_123". Let's use the default for User B.
+    from backend.main import app, get_current_user
+    
+    # GET as User B (default test_user_123)
+    headers_B = {"Authorization": "Bearer test_token"}
+    res_B = client.get("/analysis", headers=headers_B)
+    assert res_B.status_code == 200
+    assert res_B.json()["user_id"] == "test_user_123"
+    assert res_B.json()["health_score"] == 90
+
+    # Override for User A
+    app.dependency_overrides[get_current_user] = lambda: "userA"
+    res_A = client.get("/analysis", headers=headers_B)
+    assert res_A.status_code == 200
+    assert res_A.json()["user_id"] == "userA"
+    assert res_A.json()["health_score"] == 50
+    
+    # Reset overrides
+    app.dependency_overrides = {}

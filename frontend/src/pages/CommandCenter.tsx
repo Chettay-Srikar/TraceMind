@@ -10,6 +10,7 @@ import {
 } from 'recharts';
 import { Link } from 'react-router-dom';
 import { api, checkBackendStatus } from '../services/api';
+import { LogImportCenter } from '../components/import/LogImportCenter';
 import { SystemHealthResponse, LogEntry, TraceMindAnalysisResponse } from '../types';
 
 type IncidentScenario = 'critical_db' | 'healthy_normal' | 'memory_leak' | 'latency_spike';
@@ -54,6 +55,11 @@ export const CommandCenter: React.FC = () => {
   }, []);
 
   // Telemetry Chart Data for Scenario
+  const handleAnalysisSuccess = async () => {
+    const a = await api.getAnalysis();
+    setAnalysis(a);
+  };
+
   const chartData = Array.from({ length: 30 }, (_, i) => {
         const sec = (i * 2).toString().padStart(2, '0');
     const timeLabel = `10:${sec}`;
@@ -113,6 +119,10 @@ export const CommandCenter: React.FC = () => {
 
   return (
     <div className="space-y-6 pb-12 animate-pop-up">
+      {!analysis && <LogImportCenter onSuccess={handleAnalysisSuccess} />}
+      
+      {analysis && (
+        <>
 
       {/* ── Top Bar: System Status & Hackathon Demo Switcher ── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 rounded-xl bg-[#090D1C] border border-slate-800">
@@ -139,54 +149,6 @@ export const CommandCenter: React.FC = () => {
           </div>
         </div>
 
-        {/* Presentation Scenario Switcher */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-mono text-slate-400 uppercase tracking-wider flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-400" /> Demo Scenario:
-          </span>
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
-            <button
-              onClick={() => setScenario('healthy_normal')}
-              className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
-                scenario === 'healthy_normal'
-                  ? 'bg-emerald-500 text-slate-950 font-bold shadow-[0_0_10px_rgba(34,197,94,0.3)]'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              Scene 1: Healthy
-            </button>
-            <button
-              onClick={() => setScenario('critical_db')}
-              className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
-                scenario === 'critical_db'
-                  ? 'bg-red-500 text-white font-bold shadow-[0_0_10px_rgba(239,68,68,0.4)]'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              Scene 2: Incident INC-001
-            </button>
-            <button
-              onClick={() => setScenario('memory_leak')}
-              className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
-                scenario === 'memory_leak'
-                  ? 'bg-amber-500 text-slate-950 font-bold'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              Memory Leak
-            </button>
-            <button
-              onClick={() => setScenario('latency_spike')}
-              className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
-                scenario === 'latency_spike'
-                  ? 'bg-purple-500 text-white font-bold'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              Latency Spike
-            </button>
-          </div>
-        </div>
       </div>
 
       
@@ -578,6 +540,8 @@ export const CommandCenter: React.FC = () => {
         </div>
       </div>
 
+        </>
+      )}
     </div>
   );
 };

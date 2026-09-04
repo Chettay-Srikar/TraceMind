@@ -27,7 +27,7 @@ export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localho
 let isBackendLive = false;
 
 // Cache for the expensive /analysis endpoint
-let cachedAnalysisPromise: Promise<TraceMindAnalysisResponse> | null = null;
+let cachedAnalysisPromise: Promise<TraceMindAnalysisResponse | null> | null = null;
 let lastFetchTime = 0;
 
 // Helper to check live backend status
@@ -229,7 +229,7 @@ export const api = {
    * Endpoint 6: GET /analysis
    * Triggers the analysis engine on the logs. Evaluates incident deterministically and uses AI integration.
    */
-  getAnalysis: async (): Promise<TraceMindAnalysisResponse> => {
+  getAnalysis: async (): Promise<TraceMindAnalysisResponse | null> => {
     const now = Date.now();
     if (cachedAnalysisPromise && (now - lastFetchTime < 15000)) {
         return cachedAnalysisPromise;
@@ -280,7 +280,7 @@ export const api = {
         clearTimeout(timeoutId);
         isBackendLive = false;
         cachedAnalysisPromise = null; // Do NOT cache failed/aborted requests
-        return defaultSimulatedAnalysis;
+        return null;
       }
     })();
     
@@ -288,7 +288,7 @@ export const api = {
   },
 
 
-  runAnalysis: async (): Promise<TraceMindAnalysisResponse> => {
+  runAnalysis: async (): Promise<TraceMindAnalysisResponse | null> => {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 seconds
 
@@ -373,9 +373,10 @@ export const api = {
   getRecommendations: async (): Promise<RankedRecommendation[]> => {
     try {
       const analysis = await api.getAnalysis();
-      return analysis.recommendations || mockRecommendations;
+      if (!analysis) return [];
+      return analysis.recommendations || [];
     } catch {
-      return mockRecommendations;
+      return [];
     }
   },
 

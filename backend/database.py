@@ -41,6 +41,10 @@ client = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=5000)
 # ─── Database and collection references ──────────────────────────────────────
 db = client["sentinel_ai"]
 logs_collection = db["logs"]
+analysis_collection = db["analysis_results"]
+
+def get_analysis_collection():
+    return analysis_collection
 
 
 def get_logs_collection():
