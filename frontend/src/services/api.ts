@@ -11,6 +11,7 @@ import {
   TraceMindAnalysisResponse,
   ApiRootResponse
 } from '../types';
+import { supabase } from '../lib/supabaseClient';
 import { mockIncidents } from '../data/incidents';
 import { mockLogs } from '../data/logs';
 import { mockMetrics } from '../data/metrics';
@@ -43,6 +44,12 @@ export const checkBackendStatus = async (): Promise<boolean> => {
     return false;
   }
 };
+
+const getAuthHeaders = async (): Promise<HeadersInit> => {
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {};
+};
+
 
 export const getBackendLiveState = () => isBackendLive;
 
@@ -84,7 +91,7 @@ export const api = {
    */
   getRoot: async (): Promise<ApiRootResponse> => {
     try {
-      const res = await fetch(`${API_BASE_URL}/`, { cache: 'no-cache' });
+      const res = await fetch(`${API_BASE_URL}/`, { cache: 'no-cache', headers: await getAuthHeaders() });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       isBackendLive = true;
       return await res.json();
@@ -101,7 +108,7 @@ export const api = {
    */
   getHealth: async (): Promise<SystemHealthResponse> => {
     try {
-      const res = await fetch(`${API_BASE_URL}/health`, { cache: 'no-cache' });
+      const res = await fetch(`${API_BASE_URL}/health`, { cache: 'no-cache', headers: await getAuthHeaders() });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       isBackendLive = true;
       const data = await res.json();
@@ -134,7 +141,7 @@ export const api = {
    */
   getLogs: async (limit: number = 50): Promise<LogEntry[]> => {
     try {
-      const res = await fetch(`${API_BASE_URL}/logs?limit=${limit}`, { cache: 'no-cache' });
+      const res = await fetch(`${API_BASE_URL}/logs?limit=${limit}`, { cache: 'no-cache', headers: await getAuthHeaders() });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       isBackendLive = true;
       const data = await res.json();
@@ -163,7 +170,7 @@ export const api = {
    */
   getLatestLog: async (): Promise<LogEntry> => {
     try {
-      const res = await fetch(`${API_BASE_URL}/logs/latest`, { cache: 'no-cache' });
+      const res = await fetch(`${API_BASE_URL}/logs/latest`, { cache: 'no-cache', headers: await getAuthHeaders() });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       isBackendLive = true;
       const item = await res.json();
@@ -189,7 +196,7 @@ export const api = {
    */
   getAnomalies: async (): Promise<LogEntry[]> => {
     try {
-      const res = await fetch(`${API_BASE_URL}/anomalies`, { cache: 'no-cache' });
+      const res = await fetch(`${API_BASE_URL}/anomalies`, { cache: 'no-cache', headers: await getAuthHeaders() });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       isBackendLive = true;
       const data = await res.json();
@@ -228,6 +235,7 @@ export const api = {
       try {
         const res = await fetch(`${API_BASE_URL}/analysis`, { 
           cache: 'no-cache',
+          headers: await getAuthHeaders(),
           signal: controller.signal
         });
         clearTimeout(timeoutId);
@@ -305,5 +313,27 @@ export const api = {
 
   getProviders: async (): Promise<RelevantProvider[]> => {
     return mockProviders;
+  },
+
+  uploadTelemetry: async (file: File): Promise<{ status: string; imported_count: number }> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const headers = await getAuthHeaders();
+    // Do not set Content-Type for FormData, the browser handles the boundary
+    const res = await fetch(`${API_BASE_URL}/logs/import`, {
+      method: 'POST',
+      headers,
+      body: formData
+    });
+    
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.detail || `Upload failed: ${res.status}`);
+    }
+    
+    // Clear analysis cache since new logs were added
+    cachedAnalysisPromise = null;
+    return await res.json();
   }
 };
