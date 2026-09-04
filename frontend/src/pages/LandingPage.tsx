@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Cpu, Zap, ChevronRight } from 'lucide-react';
 import { ShaderBackground } from '../components/common/ShaderBackground';
+import { useAuth } from '../contexts/AuthContext';
 
 const features = [
   {
@@ -32,7 +33,10 @@ const stats = [
   { value: '6',      label: 'Global regions' },
 ];
 
-export const LandingPage: React.FC = () => (
+export const LandingPage: React.FC = () => {
+  const { authenticated } = useAuth();
+  
+  return (
   <div
     className="min-h-screen relative"
     style={{ color: '#F8FAFC', fontFamily: 'Inter, system-ui, sans-serif' }}
@@ -73,8 +77,10 @@ export const LandingPage: React.FC = () => (
       </div>
 
       <div className="flex items-center gap-3">
-        <a href="#" className="text-xs font-medium transition-colors" style={{ color: '#94A3B8' }}>Sign in</a>
-        <Link to="/app" className="btn btn-primary text-xs">
+        {!authenticated && (
+          <Link to="/auth" className="text-xs font-medium transition-colors" style={{ color: '#94A3B8' }}>Sign in</Link>
+        )}
+        <Link to={authenticated ? "/app" : "/auth"} className="btn btn-primary text-xs">
           Open Dashboard <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
@@ -108,10 +114,9 @@ export const LandingPage: React.FC = () => (
         </p>
 
         <div className="flex items-center justify-center gap-4 flex-wrap">
-          <Link to="/app" className="btn btn-primary">
+          <Link to={authenticated ? "/app" : "/auth"} className="btn btn-primary">
             Open Dashboard <ArrowRight className="w-4 h-4" />
           </Link>
-          <button className="btn btn-ghost">Watch demo</button>
         </div>
       </div>
 
@@ -285,4 +290,5 @@ export const LandingPage: React.FC = () => (
       © {new Date().getFullYear()} TraceMind · AI Incident Intelligence Platform · Built for operations excellence.
     </footer>
   </div>
-);
+  );
+};

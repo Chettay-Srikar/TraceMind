@@ -3,8 +3,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, BrainCircuit, Lightbulb,
-  ShieldAlert, Activity, BarChart3, GitCommit, Layers
+  ShieldAlert, Activity, BarChart3, GitCommit, Layers, LogOut
 } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
+import { supabase } from '../../lib/supabaseClient';
 
 const nav = [
   {
@@ -42,7 +44,14 @@ const nav = [
   },
 ];
 
-export const Sidebar: React.FC = () => (
+export const Sidebar: React.FC = () => {
+  const { user } = useAuth();
+  
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+  };
+
+  return (
   <aside className="fixed left-0 top-0 h-screen w-60 flex flex-col z-40"
     style={{ background: '#080D1A', borderRight: '1px solid #1E293B' }}>
 
@@ -84,16 +93,26 @@ export const Sidebar: React.FC = () => (
 
     {/* User */}
     <div className="p-3" style={{ borderTop: '1px solid #1E293B' }}>
-      <div className="sidebar-user-card flex items-center gap-3 p-2.5 rounded-lg cursor-pointer">
-        <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-[#020617] flex-shrink-0"
-          style={{ background: '#22C55E' }}>
-          U
+      <div className="sidebar-user-card flex items-center justify-between p-2.5 rounded-lg cursor-pointer">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-[#020617] flex-shrink-0"
+            style={{ background: '#22C55E' }}>
+            {user?.email?.[0]?.toUpperCase() || 'U'}
+          </div>
+          <div className="min-w-0">
+            <div className="text-xs font-semibold text-white truncate">User</div>
+            <div className="text-[10px] truncate" style={{ color: '#64748B' }}>{user?.email || 'user@company.com'}</div>
+          </div>
         </div>
-        <div className="min-w-0">
-          <div className="text-xs font-semibold text-white truncate">User</div>
-          <div className="text-[10px] truncate" style={{ color: '#64748B' }}>user@company.com</div>
-        </div>
+        <button 
+          onClick={handleSignOut}
+          className="p-1.5 rounded hover:bg-[#1E293B] text-slate-400 hover:text-white transition-colors"
+          title="Sign Out"
+        >
+          <LogOut className="w-4 h-4" />
+        </button>
       </div>
     </div>
   </aside>
-);
+  );
+};

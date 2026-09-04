@@ -1,5 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { Auth } from './pages/Auth';
 import { PageContainer } from './components/layout/PageContainer';
 import { CommandCenter } from './pages/CommandCenter';
 import { Logs } from './pages/Logs';
@@ -23,36 +26,43 @@ const PlaceholderPage: React.FC<{ title: string }> = ({ title }) => (
 
 function App() {
   return (
-    <BrowserRouter>
-      <CursorEffect />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        
-        <Route path="/app" element={<PageContainer />}>
-          <Route index element={<CommandCenter />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <CursorEffect />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/auth" element={<Auth />} />
           
-          <Route path="incidents" element={<Incidents />} />
-          <Route path="incidents/:id" element={<IncidentDetails />} />
-          <Route path="incidents/timeline" element={<PlaceholderPage title="Incident Timeline" />} />
+          <Route path="/app" element={<ProtectedRoute />}>
+            <Route element={<PageContainer />}>
+              <Route index element={<CommandCenter />} />
+              
+              <Route path="incidents" element={<Incidents />} />
+              <Route path="incidents/:id" element={<IncidentDetails />} />
+              <Route path="incidents/timeline" element={<PlaceholderPage title="Incident Timeline" />} />
+              
+              <Route path="logs" element={<Logs />} />
+              <Route path="metrics" element={<Metrics />} />
+              <Route path="services" element={<Services />} />
+              <Route path="infrastructure" element={<PlaceholderPage title="Infrastructure" />} />
+              <Route path="databases" element={<PlaceholderPage title="Databases" />} />
+              
+              <Route path="deployments" element={<Deployments />} />
+              
+              <Route path="analysis" element={<AIAnalysis />} />
+              <Route path="recommendations" element={<Recommendations />} />
+              <Route path="research" element={<PlaceholderPage title="Solution Intelligence" />} />
+              
+              <Route path="providers" element={<Providers />} />
+              
+              <Route path="*" element={<Navigate to="/app" replace />} />
+            </Route>
+          </Route>
           
-          <Route path="logs" element={<Logs />} />
-          <Route path="metrics" element={<Metrics />} />
-          <Route path="services" element={<Services />} />
-          <Route path="infrastructure" element={<PlaceholderPage title="Infrastructure" />} />
-          <Route path="databases" element={<PlaceholderPage title="Databases" />} />
-          
-          <Route path="deployments" element={<Deployments />} />
-          
-          <Route path="analysis" element={<AIAnalysis />} />
-          <Route path="recommendations" element={<Recommendations />} />
-          <Route path="research" element={<PlaceholderPage title="Solution Intelligence" />} />
-          
-          <Route path="providers" element={<Providers />} />
-          
-          <Route path="*" element={<Navigate to="/app" replace />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
