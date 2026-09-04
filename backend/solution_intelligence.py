@@ -45,12 +45,12 @@ Only base your solutions on the observed telemetry, the root cause, and standard
 
 Incident Type: {incident.get("incident_type")}
 Severity: {incident.get("severity")}
-Affected Services: {json.dumps(incident.get("affected_services", []))}
+Affected Services: {json.dumps(incident.get("affected_services", []), default=str)}
 Root Cause: {ai_inv.get("root_cause", enhanced_result.get("root_cause"))}
 Confidence: {ai_inv.get("root_cause_confidence", enhanced_result.get("confidence", 50))}
-Trigger Event: {json.dumps(incident.get("trigger_event", {}))}
-Peak Event: {json.dumps(incident.get("peak_event", {}))}
-Uncertainties: {json.dumps(ai_inv.get("uncertainties", []))}
+Trigger Event: {json.dumps(incident.get("trigger_event", {}), default=str)}
+Peak Event: {json.dumps(incident.get("peak_event", {}), default=str)}
+Uncertainties: {json.dumps(ai_inv.get("uncertainties", []), default=str)}
 
 Return exactly and ONLY a valid JSON object matching this schema:
 {{

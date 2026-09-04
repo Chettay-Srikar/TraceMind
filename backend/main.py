@@ -153,7 +153,7 @@ async def get_analysis():
         collection = get_logs_collection()
         # Fetch all logs for a complete analysis
         cursor = collection.find({}).sort("timestamp", 1)
-        all_logs = list(cursor)
+        all_logs = [serialize_mongo_doc(doc) for doc in cursor]
         
         # Analyze them deterministically
         deterministic_result = analyze_logs(all_logs)

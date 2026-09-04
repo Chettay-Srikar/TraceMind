@@ -8,7 +8,8 @@ TraceMind investigates simulated production incidents using logs, metrics, and s
 
 ## Current Phase
 
-**Step 7** — Implemented Recovery Verification (Deterministic Simulation due to hackathon constraints).
+**Steps 1-7** — Implemented full pipeline from Telemetry Generation to Recovery Verification.
+*Note: Steps 6 and 7 (Remediation and Recovery Verification) are simulation-based and do not modify real infrastructure.*
 
 ## Planned Technology Stack
 

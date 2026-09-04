@@ -54,12 +54,12 @@ Incident Type: {incident.get("incident_type")}
 Severity: {incident.get("severity")}
 Correlation Score: {incident.get("correlation_score")}
 Status: {incident.get("status")}
-Affected Services: {json.dumps(incident.get("affected_services", []))}
-Metrics: {json.dumps(metrics)}
-Deterministic Evidence: {json.dumps(evidence)}
+Affected Services: {json.dumps(incident.get("affected_services", []), default=str)}
+Metrics: {json.dumps(metrics, default=str)}
+Deterministic Evidence: {json.dumps(evidence, default=str)}
 
 Timeline of events:
-{json.dumps(incident.get("timeline", []), indent=2)}
+{json.dumps(incident.get("timeline", []), indent=2, default=str)}
 
 Return exactly and ONLY a valid JSON object matching this schema:
 {{
