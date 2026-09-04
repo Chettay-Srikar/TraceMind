@@ -24,7 +24,7 @@ def enhance_analysis(deterministic_result, logs_context):
         evidence = deterministic_result.get("evidence", [])
         metrics = deterministic_result.get("metrics", {})
         
-        prompt = f"""You are an incident-analysis assistant for SentinelAI.
+        prompt = f"""You are an incident-analysis assistant for TraceMind.
 Do not invent facts. Base conclusions only on the supplied deterministic metrics and evidence.
 Treat deterministic severity and anomaly scores as authoritative.
 Do not expose secrets or credentials.

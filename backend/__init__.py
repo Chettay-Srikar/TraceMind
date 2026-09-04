@@ -1,1 +1,1 @@
-# SentinelAI backend package
+# TraceMind backend package

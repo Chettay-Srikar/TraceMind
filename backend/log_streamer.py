@@ -1,5 +1,5 @@
 """
-SentinelAI — Log Streamer
+TraceMind — Log Streamer
 
 Reads simulated logs from data/logs.json and streams them ONE AT A TIME
 into MongoDB with an artificial delay.
@@ -92,7 +92,7 @@ def stream_logs(collection, logs):
         sys.exit(1)
 
 def main():
-    print("Starting SentinelAI Log Streamer...")
+    print("Starting TraceMind Log Streamer...")
     
     # 1. Get the MongoDB collection using the existing database module
     try:

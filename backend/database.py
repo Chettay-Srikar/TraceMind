@@ -1,5 +1,5 @@
 """
-SentinelAI — Database Connection
+TraceMind — Database Connection
 
 Connects to MongoDB Atlas using PyMongo.
 Loads the connection string from the .env file so credentials

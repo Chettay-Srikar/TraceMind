@@ -1,5 +1,5 @@
 """
-SentinelAI — Deterministic Analysis Engine
+TraceMind — Deterministic Analysis Engine
 
 Analyzes a list of MongoDB log documents and returns a single, deterministic
 analysis result containing health score, anomaly score, severity, root cause,

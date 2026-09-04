@@ -1,5 +1,5 @@
 """
-SentinelAI — FastAPI Entry Point
+TraceMind — FastAPI Entry Point
 
 Provides REST API endpoints to access simulated logs stored in MongoDB.
 """
@@ -15,7 +15,7 @@ from backend.analyzer import analyze_logs
 from backend.featherless_client import enhance_analysis
 import os
 
-app = FastAPI(title="SentinelAI API", description="AI-powered software incident-response agent API")
+app = FastAPI(title="TraceMind API", description="AI-powered software incident-response agent API")
 
 origins = [
     "http://localhost:3000",
@@ -43,7 +43,7 @@ def serialize_mongo_doc(doc: dict) -> dict:
 @app.get("/")
 async def root():
     """Confirm the API is running."""
-    return {"message": "SentinelAI API is running"}
+    return {"message": "TraceMind API is running"}
 
 @app.get("/health")
 async def health_check():
@@ -125,7 +125,7 @@ async def get_anomalies():
 @app.get("/analysis")
 async def get_analysis():
     """
-    Returns the current deterministic SentinelAI incident analysis.
+    Returns the current deterministic TraceMind incident analysis.
     
     The response contains the following fields:
     - health_score

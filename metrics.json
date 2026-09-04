@@ -1,8 +1,8 @@
 {
-  "project": "SentinelAI",
+  "project": "TraceMind",
   "version": "1.0",
   "metrics_source": "GET /analysis",
-  "dashboard_usage": "These fields formally define the schema for the metrics expected by the SentinelAI frontend dashboard. Actual values are populated dynamically via the GET /analysis endpoint.",
+  "dashboard_usage": "These fields formally define the schema for the metrics expected by the TraceMind frontend dashboard. Actual values are populated dynamically via the GET /analysis endpoint.",
   "metrics": [
     {
       "name": "health_score",

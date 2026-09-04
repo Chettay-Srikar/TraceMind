@@ -1,10 +1,10 @@
-# SentinelAI
+# TraceMind
 
 An AI-powered software incident-response agent.
 
 ## Purpose
 
-SentinelAI investigates simulated production incidents using logs, metrics, and service-health data. It identifies probable root causes, explains its evidence, recommends remediation, and verifies recovery.
+TraceMind investigates simulated production incidents using logs, metrics, and service-health data. It identifies probable root causes, explains its evidence, recommends remediation, and verifies recovery.
 
 ## Current Phase
 
@@ -22,7 +22,7 @@ SentinelAI investigates simulated production incidents using logs, metrics, and 
 ## Project Structure
 
 ```
-SentinelAI/
+TraceMind/
 ├── backend/
 │   ├── __init__.py        # Package marker
 │   ├── main.py            # FastAPI entry point (future)
